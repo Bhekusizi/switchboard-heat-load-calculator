@@ -1,0 +1,2758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Switchboard Heat Load Calculator — IEC TR 60890 Cooling &amp; Heater Sizing Tool | SparkyCalc</title>
+<meta name="description" content="Free switchboard heat load calculator based on IEC TR 60890. Size cooling fans, anti-condensation heaters, heat exchangers and air conditioning for low-voltage switchgear enclosures. Supports all 7 installation types, component loss library, PDF report export and altitude correction up to 3500 m.">
+<meta name="keywords" content="switchboard heat load calculator, IEC TR 60890, enclosure cooling calculator, electrical panel heat dissipation, cooling fan sizing, anti-condensation heater sizing, low voltage switchgear temperature rise, electrical enclosure ventilation, switchboard cooling fan calculator, switchboard heater calculator, enclosure temperature rise calculation, IEC 61439 heat load, MCC heat load, panel cooling calculator, sparkycalc">
+<meta name="robots" content="index, follow">
+<meta name="author" content="SparkyCalc">
+<link rel="canonical" href="https://sparkycalc.com/switchboard-heat-load-calculator/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SparkyCalc">
+<meta property="og:title" content="Switchboard Heat Load Calculator — IEC TR 60890 Cooling &amp; Heater Sizing Tool">
+<meta property="og:description" content="Free online tool to size cooling fans, anti-condensation heaters, heat exchangers and A/C for low-voltage switchgear enclosures. All 7 IEC TR 60890 installation types, component loss library, PDF export and altitude correction.">
+<meta property="og:url" content="https://sparkycalc.com/switchboard-heat-load-calculator/">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Switchboard Heat Load Calculator — IEC TR 60890 | SparkyCalc">
+<meta name="twitter:description" content="Free calculator to size cooling fans, heaters and verify natural convection for LV switchgear enclosures using IEC TR 60890. Component library, PDF reports, save/load configs.">
+
+<!-- Structured Data: WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Switchboard Heat Load Calculator",
+  "alternateName": "IEC TR 60890 Enclosure Cooling Calculator",
+  "description": "Free online switchboard heat load calculator based on IEC TR 60890. Sizes cooling fans, anti-condensation heaters, heat exchangers and air conditioning for low-voltage switchgear and controlgear assemblies. Features component loss library, PDF report export, save/load configurations and altitude correction.",
+  "url": "https://sparkycalc.com/switchboard-heat-load-calculator/",
+  "applicationCategory": "EngineeringApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "creator": {
+    "@type": "Organization",
+    "name": "SparkyCalc",
+    "url": "https://sparkycalc.com"
+  },
+  "featureList": [
+    "Cooling fan airflow sizing (m3/h, L/s, CFM)",
+    "Anti-condensation heater rating calculation",
+    "Natural convection adequacy check",
+    "Heat exchanger sizing with effectiveness factor",
+    "Air conditioning capacity sizing with COP",
+    "All 7 IEC TR 60890 installation configurations",
+    "IP rating derating (IP00 to IP67)",
+    "Solar radiation gain calculation",
+    "Altitude correction (0-3500 m above sea level)",
+    "Component-by-component heat loss builder with 50+ device library",
+    "PDF calculation report export",
+    "Save and load configurations",
+    "Real-time live calculation mode",
+    "Reverse calculation (max QG for given cooling)",
+    "Project details and documentation"
+  ],
+  "about": {
+    "@type": "Thing",
+    "name": "IEC TR 60890",
+    "description": "A method of temperature-rise verification of low-voltage switchgear and controlgear assemblies by calculation"
+  }
+}
+</script>
+
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is IEC TR 60890?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "IEC TR 60890 is an international technical report that specifies a method for calculating temperature rise inside enclosures for low-voltage switchgear and controlgear assemblies. The latest edition is IEC TR 60890:2022 (third edition), which cancels and replaces the 2014 second edition."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate the heat load of a switchboard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Using IEC TR 60890: (1) Determine the effective surface area A using the formula for your installation type, (2) Calculate surface heat dissipation QS = k x A x (Ti - Tu), where k is the material heat transfer coefficient, (3) Find residual heat QR = QG - QS, where QG is the total internal heat gain. If QR is positive, forced cooling such as a fan, heat exchanger or air conditioning is required."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the air constant f in IEC TR 60890?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The air constant f accounts for reduced air density at altitude. At sea level f = 3.1 m3K/Wh, rising to 5.2 m3K/Wh at 3500 m above sea level. A higher f value means a larger fan airflow is needed to achieve the same cooling at altitude."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is an anti-condensation heater sized for a switchboard?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Per IEC TR 60890, the heater rating Q = A x k x (Ti - Tu), where A is the effective surface area of the enclosure, k is the heat transfer coefficient of the enclosure material, Ti is the desired internal temperature and Tu is the minimum ambient temperature. The heater maintains the internal temperature above the dew point to prevent condensation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this calculator for motor control centres and distribution boards?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. IEC TR 60890 applies to all low-voltage switchgear and controlgear assemblies, including motor control centres (MCCs), main switchboards (MSBs), distribution boards (DBs), power distribution units (PDUs) and PLC control panels, provided they are enclosed assemblies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What heat transfer coefficient k should I use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Per IEC TR 60890: sheet steel and aluminium use k = 5.5 W/m2K, stainless steel uses k = 5.1 W/m2K, and plastic or polyester enclosures use k = 3.5 W/m2K. High IP-rated enclosures should be derated accordingly."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- Structured Data: BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "SparkyCalc", "item": "https://sparkycalc.com/" },
+    { "@type": "ListItem", "position": 2, "name": "Switchboard Heat Load Calculator", "item": "https://sparkycalc.com/switchboard-heat-load-calculator/" }
+  ]
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&family=Syne:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════════
+   SPARKY DARK v3 THEME — Readability & Workflow Overhaul
+   ═══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Backgrounds */
+  --bg1: #1e2738;
+  --bg2: #28334e;
+  --bg3: #323f60;
+  --bg4: #3c4b70;
+  /* Input bg — lighter than card bg so fields are clearly visible */
+  --input-bg: #3a4a72;
+
+  /* Accent */
+  --amber: #e8a838;
+  --amber-light: #f0c060;
+  --amber-dim: rgba(232,168,56,0.18);
+  --amber-glow: rgba(232,168,56,0.10);
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #d6ddf0;
+  --text-muted: #b8c2d8;
+  --text-label: #cad3e6;
+
+  /* Semantic */
+  --info: #4a9eff;
+  --info-dim: rgba(74,158,255,0.12);
+  --info-border: rgba(74,158,255,0.35);
+  --success: #3ecf8e;
+  --success-dim: rgba(62,207,142,0.12);
+  --success-border: rgba(62,207,142,0.35);
+  --danger: #f06060;
+  --danger-dim: rgba(240,96,96,0.12);
+  --danger-border: rgba(240,96,96,0.35);
+  --warn: #f0a030;
+  --warn-dim: rgba(240,160,48,0.12);
+  --warn-border: rgba(240,160,48,0.35);
+
+  /* Borders */
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.12);
+  --input-border: rgba(255,255,255,0.18);
+
+  /* Radii */
+  --radius: 14px;
+  --radius-sm: 8px;
+
+  /* Fonts */
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'Lora', serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg1);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ─── Header ──────────────────────────────────────────────────────────────── */
+.header {
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(232,168,56,0.05) 0%, transparent 100%);
+  padding: 2rem 2rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(232,168,56,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-inner { max-width: 1200px; margin: 0 auto; }
+.header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+.header-left { flex: 1; }
+.header-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--amber);
+  background: var(--amber-dim);
+  border: 1px solid rgba(232,168,56,0.35);
+  border-radius: 4px;
+  padding: 3px 10px;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+}
+.header h1 {
+  font-family: var(--font-head);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+.header h1 span { color: var(--amber); }
+.header p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  max-width: 640px;
+  line-height: 1.6;
+}
+
+/* Header toolbar */
+.header-toolbar { display: flex; gap: 8px; align-items: center; flex-shrink: 0; padding-top: 0.5rem; }
+.toolbar-btn {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-hover);
+  background: var(--bg3);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+.toolbar-btn:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+.toolbar-btn.live-active { border-color: var(--success); color: var(--success); background: var(--success-dim); }
+
+/* ─── Main layout ─────────────────────────────────────────────────────────── */
+.main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 4rem; display: grid; grid-template-columns: 1fr 400px; gap: 1.5rem; align-items: start; }
+@media (max-width: 920px) {
+  .main { grid-template-columns: 1fr; padding: 1rem; }
+  .sidebar { order: -1; }
+}
+
+/* ─── Mode selector (segmented control) ───────────────────────────────────── */
+.mode-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 3px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
+  margin-bottom: 1.5rem;
+}
+.mode-btn {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 12px 10px;
+  border-radius: 11px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  line-height: 1.3;
+}
+.mode-btn.active {
+  background: var(--amber);
+  color: #0d1117;
+}
+.mode-btn:not(.active):hover { color: var(--text-primary); background: var(--bg4); }
+
+/* ─── Section cards ───────────────────────────────────────────────────────── */
+.section-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+.section-number {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: #0d1117;
+  background: var(--amber);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.section-title {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+.section-body { padding: 1.5rem; }
+
+/* ─── Form fields ─────────────────────────────────────────────────────────── */
+.field-row { display: grid; gap: 14px; margin-bottom: 14px; }
+.field-row.cols2 { grid-template-columns: 1fr 1fr; }
+.field-row.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+.field-row.cols4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.field-row:last-child { margin-bottom: 0; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-label);
+  letter-spacing: 0.02em;
+}
+.field label sub { font-size: 11px; }
+
+/* Required field indicator */
+.field.required label::after {
+  content: '*';
+  color: var(--amber);
+  margin-left: 4px;
+  font-weight: 700;
+}
+.field.required input,
+.field.required select {
+  border-left: 3px solid var(--amber);
+}
+.field.required input:not(:placeholder-shown),
+.field.required select:not([data-empty]) {
+  border-left: 3px solid var(--success);
+}
+/* When input has a value and is not empty, show green left border */
+.field.required input:valid:not(:placeholder-shown) {
+  border-left-color: var(--success);
+}
+
+input[type="number"], input[type="text"], select {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+
+/* Project details card */
+.project-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.project-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+  cursor: pointer;
+  user-select: none;
+}
+.project-header:hover { background: var(--bg4); }
+.project-toggle {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.project-toggle.open { transform: rotate(90deg); }
+.project-title {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  flex: 1;
+}
+.project-summary {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.project-body {
+  padding: 1.5rem;
+  display: none;
+}
+.project-body.open { display: block; }
+
+/* Required fields legend */
+.required-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend-swatch {
+  width: 4px;
+  height: 18px;
+  border-radius: 2px;
+}
+.legend-swatch.amber { background: var(--amber); }
+.legend-swatch.green { background: var(--success); }
+input[type="number"]:focus, input[type="text"]:focus, select:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px var(--amber-glow);
+}
+input[type="number"]::placeholder, input[type="text"]::placeholder { color: var(--text-muted); opacity: 0.6; }
+select option { background: var(--bg3); color: var(--text-primary); }
+input[type="number"]::-webkit-inner-spin-button { opacity: 0.4; }
+
+/* Unit hint inside input */
+.field-wrap { position: relative; }
+.field-unit {
+  position: absolute;
+  right: 12px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  pointer-events: none;
+  background: var(--input-bg);
+  padding-left: 4px;
+}
+.field-wrap input { padding-right: 52px; }
+
+/* ─── Toggle rows ─────────────────────────────────────────────────────────── */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+.toggle-row:first-child { padding-top: 0; }
+.toggle-switch {
+  width: 38px; height: 22px;
+  background: var(--bg4);
+  border: 1px solid var(--border-hover);
+  border-radius: 11px;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  top: 2px; left: 2px;
+  transition: transform 0.2s, background 0.2s;
+}
+.toggle-switch.on { background: var(--amber-dim); border-color: var(--amber); }
+.toggle-switch.on::after { background: var(--amber); transform: translateX(16px); }
+.toggle-label { font-size: 15px; color: var(--text-secondary); flex: 1; line-height: 1.4; }
+.toggle-label strong { color: var(--text-primary); font-weight: 600; display: block; font-family: var(--font-head); font-size: 15px; margin-bottom: 1px; }
+
+/* ─── Info / Alert boxes ──────────────────────────────────────────────────── */
+.info-box {
+  background: var(--info-dim);
+  border: 1px solid var(--info-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--info);
+  font-family: var(--font-body);
+  font-weight: 500;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+.info-box.warn { background: var(--warn-dim); border-color: var(--warn-border); color: var(--warn); }
+.info-box.danger { background: var(--danger-dim); border-color: var(--danger-border); color: var(--danger); }
+.info-box.success { background: var(--success-dim); border-color: var(--success-border); color: var(--success); }
+
+/* ─── Calculate button ────────────────────────────────────────────────────── */
+.calc-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--amber);
+  color: #0d1117;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  margin-top: 0.75rem;
+}
+.calc-btn:hover { background: var(--amber-light); box-shadow: 0 0 24px var(--amber-glow); }
+.calc-btn:active { transform: scale(0.99); }
+
+/* ─── Sidebar ─────────────────────────────────────────────────────────────── */
+.sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+
+/* ─── Results panel ───────────────────────────────────────────────────────── */
+.results-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: none;
+}
+.results-panel.show { display: block; }
+.results-header {
+  padding: 1rem 1.25rem;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.results-title {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.results-badge {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--amber);
+  background: var(--amber-dim);
+  border: 1px solid rgba(232,168,56,0.35);
+  border-radius: 4px;
+  padding: 3px 10px;
+}
+
+/* Primary result */
+.primary-result {
+  padding: 1.75rem 1.25rem 1.25rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.primary-label {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.primary-value {
+  font-family: var(--font-head);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.primary-unit {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+.primary-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+/* Metric grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.metric-cell {
+  background: var(--bg3);
+  padding: 14px 1.25rem;
+  border-left: 3px solid transparent;
+}
+.metric-cell.accent-info { border-left-color: var(--info); }
+.metric-cell.accent-success { border-left-color: var(--success); }
+.metric-cell.accent-warn { border-left-color: var(--warn); }
+.metric-cell.accent-danger { border-left-color: var(--danger); }
+.metric-cell-label {
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.metric-cell-value {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.metric-cell-unit { font-size: 13px; color: var(--text-muted); font-weight: 400; }
+
+/* Steps table — two-line layout */
+.steps-section { padding: 1.25rem; }
+.steps-label {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+.step-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.step-row:last-child { border-bottom: none; }
+.step-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.step-symbol { color: var(--amber); font-family: var(--font-mono); font-weight: 600; font-size: 15px; }
+.step-val { color: var(--text-primary); font-family: var(--font-mono); font-weight: 600; font-size: 15px; white-space: nowrap; }
+.step-expr { color: var(--text-muted); font-family: var(--font-mono); font-weight: 400; font-size: 13px; line-height: 1.5; }
+
+/* Extra results */
+.extra-results { padding: 0 1.25rem 1.25rem; }
+.extra-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.extra-row:last-child { border-bottom: none; }
+.extra-row-label { color: var(--text-secondary); font-family: var(--font-body); font-size: 14px; font-weight: 500; }
+.extra-row-val { color: var(--text-primary); font-family: var(--font-mono); font-weight: 600; font-size: 15px; }
+
+/* ─── Reference panel ─────────────────────────────────────────────────────── */
+.ref-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.ref-header {
+  padding: 0.9rem 1.25rem;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.ref-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ref-table th {
+  text-align: left;
+  padding: 8px 1.25rem;
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+.ref-table td {
+  padding: 8px 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+.ref-table td:first-child { color: var(--amber); font-weight: 600; }
+.ref-table tr:last-child td { border-bottom: none; }
+
+/* ─── Heat method selector ────────────────────────────────────────────────── */
+.heat-method-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.heat-method-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--bg3);
+  border: 1.5px solid var(--border-hover);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  position: relative;
+}
+.heat-method-btn:hover { background: var(--bg4); border-color: var(--border-hover); }
+.heat-method-btn.active { background: var(--amber-dim); border-color: var(--amber); }
+.heat-method-btn .hm-dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border-hover);
+  background: transparent;
+  position: absolute;
+  top: 12px; right: 12px;
+  transition: all 0.15s;
+}
+.heat-method-btn.active .hm-dot {
+  background: var(--amber);
+  border-color: var(--amber);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d1117' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: none;
+}
+.heat-method-btn .hm-title { font-family: var(--font-head); font-size: 15px; font-weight: 600; color: var(--text-secondary); padding-right: 28px; transition: color 0.15s; }
+.heat-method-btn.active .hm-title { color: var(--text-primary); }
+.heat-method-btn .hm-desc { font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--text-muted); line-height: 1.4; }
+.heat-method-btn.active .hm-desc { color: var(--text-secondary); opacity: 1; }
+.heat-input-panel { border-top: 1px solid var(--border); padding-top: 14px; margin-top: 4px; }
+
+/* ─── Altitude visual ─────────────────────────────────────────────────────── */
+.sub-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.sub-section-title {
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+.alt-visual { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; }
+.alt-opt {
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 2px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.alt-opt:hover { background: var(--bg4); border-color: var(--border-hover); }
+.alt-opt.sel {
+  background: var(--amber-dim);
+  border-color: var(--amber);
+}
+.alt-opt::before {
+  content: '';
+  display: block;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-hover);
+  background: transparent;
+  margin: 0 auto 4px;
+  transition: all 0.15s;
+}
+.alt-opt.sel::before {
+  background: var(--amber);
+  border-color: var(--amber);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d1117' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-size: 9px 9px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.alt-opt-val { font-family: var(--font-mono); font-size: 14px; font-weight: 400; color: var(--text-primary); line-height: 1; }
+.alt-opt.sel .alt-opt-val { color: var(--text-primary); }
+.alt-opt-f { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-top: 4px; }
+.alt-opt.sel .alt-opt-f { color: var(--amber); font-weight: 600; }
+
+/* ─── Component table ─────────────────────────────────────────────────────── */
+.comp-table { width: 100%; border-collapse: collapse; }
+.comp-table th {
+  font-family: var(--font-head);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-label);
+  padding: 8px 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.comp-table td { padding: 8px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table input[type="number"], .comp-table input[type="text"] { padding: 7px 8px; font-size: 15px; }
+.comp-table .comp-loss { font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--amber); text-align: right; }
+.add-comp-btn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px dashed var(--border-hover);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 10px;
+}
+.add-comp-btn:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+.del-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.del-btn:hover { color: var(--danger); }
+
+/* ─── Component library dropdown ──────────────────────────────────────────── */
+.comp-library-row { display: flex; gap: 8px; margin-top: 10px; }
+.comp-library-row select { flex: 1; font-size: 14px; padding: 9px 10px; }
+.comp-library-add {
+  padding: 9px 16px;
+  background: var(--bg4);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius-sm);
+  color: var(--amber);
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.comp-library-add:hover { background: var(--amber-dim); border-color: var(--amber); }
+
+/* ─── Ventilation method ──────────────────────────────────────────────────── */
+.vent-method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.vent-card {
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.vent-card:hover { background: var(--bg4); border-color: var(--border-hover); }
+.vent-card.sel {
+  background: var(--amber-dim);
+  border-color: var(--amber);
+}
+.vent-card::after {
+  content: '';
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border-hover);
+  background: transparent;
+  transition: all 0.15s;
+}
+.vent-card.sel::after {
+  background: var(--amber);
+  border-color: var(--amber);
+  /* CSS checkmark */
+  content: '';
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230d1117' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.vent-card-title { font-family: var(--font-head); font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 3px; padding-right: 28px; }
+.vent-card.sel .vent-card-title { color: var(--text-primary); }
+.vent-card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; font-family: var(--font-body); font-weight: 500; padding-right: 28px; }
+.vent-card.sel .vent-card-desc { color: var(--text-secondary); }
+
+/* ─── Save/load modal ─────────────────────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 90%;
+  max-width: 480px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.modal h3 {
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+.modal-close {
+  float: right;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+}
+.modal-close:hover { color: var(--text-primary); }
+.saved-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.saved-item:hover { border-color: var(--amber); background: var(--amber-dim); }
+.saved-item-name { font-family: var(--font-head); font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.saved-item-date { font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); }
+.saved-item-del {
+  background: none; border: none; color: var(--text-muted); cursor: pointer;
+  font-size: 14px; padding: 2px 6px; border-radius: 4px;
+}
+.saved-item-del:hover { color: var(--danger); }
+.modal-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 10px;
+}
+.modal-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px var(--amber-glow); }
+.modal-save-btn {
+  width: 100%;
+  padding: 10px;
+  background: var(--amber);
+  color: #0d1117;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.modal-save-btn:hover { background: var(--amber-light); }
+
+/* ─── Validation error ────────────────────────────────────────────────────── */
+.field-error input, .field-error select { border-color: var(--danger) !important; }
+.error-msg { font-family: var(--font-body); font-size: 12px; color: var(--danger); margin-top: 2px; }
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .field-row.cols3, .field-row.cols4 { grid-template-columns: 1fr 1fr; }
+  .field-row.cols2 { grid-template-columns: 1fr; }
+  .vent-method-grid { grid-template-columns: 1fr; }
+  .alt-visual { grid-template-columns: repeat(4, 1fr); }
+  .metrics-grid { grid-template-columns: 1fr; }
+  .header-toolbar { flex-wrap: wrap; }
+  .heat-method-row { grid-template-columns: 1fr; }
+}
+
+/* ─── SEO section ─────────────────────────────────────────────────────────── */
+.seo-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+  padding: 3rem 2rem;
+}
+.seo-inner { max-width: 1200px; margin: 0 auto; }
+.seo-section h2 {
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin: 2rem 0 0.75rem;
+}
+.seo-section h2:first-child { margin-top: 0; }
+.seo-section h3 {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--amber);
+  margin: 0 0 0.6rem;
+}
+.seo-section p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+.seo-section p:last-child { margin-bottom: 0; }
+.seo-section strong { color: var(--text-primary); font-weight: 600; }
+.seo-section em { color: var(--amber); font-style: normal; font-family: var(--font-mono); font-size: 13px; }
+.seo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+}
+.seo-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.seo-faq { margin-top: 1rem; }
+.seo-faq dt {
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 1.25rem 0 0.4rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--amber);
+}
+.seo-faq dt:first-child { margin-top: 0; }
+.seo-faq dd {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.75;
+  padding-left: 1rem;
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .seo-grid { grid-template-columns: 1fr; }
+  .seo-section { padding: 2rem 1rem; }
+}
+
+/* ─── Print ───────────────────────────────────────────────────────────────── */
+@media print {
+  body { background: #fff; color: #222; }
+  .header, .seo-section, .toolbar-btn, .calc-btn, .ref-panel, .mode-selector { display: none; }
+  .main { grid-template-columns: 1fr; }
+  .results-panel { border: 1px solid #ccc; display: block !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══════════════════════════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-left">
+        <div class="header-badge">IEC TR 60890 : 2014 / 2022</div>
+        <h1>Switchboard <span>Heat Load</span> Calculator</h1>
+        <p>Size cooling fans, anti-condensation heaters &amp; verify natural convection for LV switchgear enclosures.</p>
+      </div>
+      <div class="header-toolbar">
+        <button class="toolbar-btn" onclick="toggleLiveCalc()" id="liveBtn" title="Toggle real-time calculation">Live</button>
+        <button class="toolbar-btn" onclick="openSaveModal()" title="Save/load configurations">Save / Load</button>
+        <button class="toolbar-btn" onclick="exportPDF()" title="Export PDF report">PDF Report</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MAIN CONTENT ═══════════════════════════════════════════════════════ -->
+<div class="main">
+  <!-- LEFT COLUMN: Inputs -->
+  <div class="inputs-col">
+
+    <!-- Project Details (collapsible) -->
+    <div class="project-card">
+      <div class="project-header" onclick="toggleProject()">
+        <span class="project-toggle open" id="projToggle">&#9654;</span>
+        <span class="project-title">Project Details</span>
+        <span class="project-summary" id="projSummary"></span>
+      </div>
+      <div class="project-body open" id="projBody">
+        <div class="field-row cols2">
+          <div class="field required">
+            <label for="projName">Project name</label>
+            <input type="text" id="projName" placeholder="e.g. Main Distribution Board" oninput="updateProjSummary()">
+          </div>
+          <div class="field required">
+            <label for="projNumber">Project / job number</label>
+            <input type="text" id="projNumber" placeholder="e.g. P-2024-0153" oninput="updateProjSummary()">
+          </div>
+        </div>
+        <div class="field-row cols2">
+          <div class="field required">
+            <label for="projClient">Client</label>
+            <input type="text" id="projClient" placeholder="e.g. Acme Industries">
+          </div>
+          <div class="field required">
+            <label for="projEngineer">Engineer</label>
+            <input type="text" id="projEngineer" placeholder="e.g. J. Smith">
+          </div>
+        </div>
+        <div class="field-row cols2">
+          <div class="field required">
+            <label for="projLocation">Location / site</label>
+            <input type="text" id="projLocation" placeholder="e.g. Building 3, Level 1 MSB">
+          </div>
+          <div class="field required">
+            <label for="projDate">Date</label>
+            <input type="text" id="projDate" placeholder="e.g. 23 Mar 2026" oninput="updateProjSummary()">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field required">
+            <label for="projNotes">Notes / revision</label>
+            <input type="text" id="projNotes" placeholder="e.g. Rev A — preliminary sizing">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Required fields legend -->
+    <div class="required-legend">
+      <span style="font-weight:600;">Input guide:</span>
+      <span class="legend-item"><span class="legend-swatch amber"></span> Needs your input</span>
+      <span class="legend-item"><span class="legend-swatch green"></span> Value entered</span>
+    </div>
+
+    <!-- Mode -->
+    <div class="mode-selector" role="group" aria-label="Calculation mode">
+      <button class="mode-btn active" onclick="setMode('fan')" id="btn-fan" aria-label="Size cooling fan airflow" role="tab" aria-selected="true" tabindex="0">Cooling Fan</button>
+      <button class="mode-btn" onclick="setMode('heater')" id="btn-heater" aria-label="Size anti-condensation heater" role="tab" aria-selected="false" tabindex="-1">Anti-Condensation Heater</button>
+      <button class="mode-btn" onclick="setMode('natural')" id="btn-natural" aria-label="Check natural convection" role="tab" aria-selected="false" tabindex="-1">Natural Convection Check</button>
+    </div>
+
+    <!-- 1. Enclosure Configuration -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-number">1</span>
+        <span class="section-title" role="heading" aria-level="3">Enclosure Configuration</span>
+      </div>
+      <div class="section-body">
+        <div class="field-row">
+          <div class="field">
+            <label for="installation">Installation type</label>
+            <select id="installation" onchange="updateAreaFormula(); liveCalc();" aria-label="Switchboard installation type">
+              <option value="free_single">Single free-standing switchboard</option>
+              <option value="wall_single">Single wall-mounted switchboard</option>
+              <option value="free_suite_end">First/last — free-standing suite</option>
+              <option value="wall_suite_end">First/last — wall-mounted suite</option>
+              <option value="free_suite_mid">Within suite — free-standing</option>
+              <option value="wall_suite_mid">Within suite — wall-mounted</option>
+              <option value="wall_suite_roof">Within suite — wall-mounted, roof covered</option>
+            </select>
+          </div>
+        </div>
+        <!-- Installation type description -->
+        <div class="install-desc" id="installDesc"></div>
+        <div class="field-row" style="margin-top:12px;">
+          <div class="field">
+            <label for="material">Enclosure material</label>
+            <select id="material" onchange="updateK(); liveCalc();" aria-label="Enclosure material">
+              <option value="5.5" data-k="5.5">Sheet steel (k = 5.5 W/m²K)</option>
+              <option value="5.1" data-k="5.1">Stainless steel (k = 5.1 W/m²K)</option>
+              <option value="3.5" data-k="3.5">Plastic / polyester (k = 3.5 W/m²K)</option>
+              <option value="5.5" data-k="5.5">Aluminium (k = 5.5 W/m²K)</option>
+              <option value="custom">Custom k value</option>
+            </select>
+          </div>
+          <div class="field" id="customKField" style="display:none;">
+            <label for="customK">Custom k (W/m²K)</label>
+            <div class="field-wrap">
+              <input type="number" id="customK" value="5.5" min="0.1" max="50" step="0.1" oninput="liveCalc()">
+              <span class="field-unit">W/m²K</span>
+            </div>
+          </div>
+        </div>
+        <div id="areaFormulaBox" class="info-box"></div>
+      </div>
+    </div>
+
+    <!-- 2. Dimensions -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-number">2</span>
+        <span class="section-title" role="heading" aria-level="3">Enclosure Dimensions</span>
+      </div>
+      <div class="section-body">
+        <div class="field-row cols3">
+          <div class="field required" id="field-height">
+            <label for="height">Height H</label>
+            <div class="field-wrap">
+              <input type="number" id="height" value="2000" min="100" max="5000" step="1" aria-label="Enclosure height in millimetres" oninput="liveCalc()">
+              <span class="field-unit">mm</span>
+            </div>
+          </div>
+          <div class="field required" id="field-width">
+            <label for="width">Width W</label>
+            <div class="field-wrap">
+              <input type="number" id="width" value="800" min="100" max="5000" step="1" aria-label="Enclosure width in millimetres" oninput="liveCalc()">
+              <span class="field-unit">mm</span>
+            </div>
+          </div>
+          <div class="field required" id="field-depth">
+            <label for="depth">Depth D</label>
+            <div class="field-wrap">
+              <input type="number" id="depth" value="400" min="100" max="5000" step="1" aria-label="Enclosure depth in millimetres" oninput="liveCalc()">
+              <span class="field-unit">mm</span>
+            </div>
+          </div>
+        </div>
+        <div class="info-box" id="surfaceAreaDisplay"></div>
+      </div>
+    </div>
+
+    <!-- 3. Heat Gain -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-number">3</span>
+        <span class="section-title">Internal Heat Gain Q<sub>G</sub></span>
+      </div>
+      <div class="section-body">
+        <div class="heat-method-row">
+          <button class="heat-method-btn active" onclick="setHeatMode('direct')" id="htab-direct">
+            <div class="hm-dot"></div>
+            <span class="hm-title">Direct entry</span>
+            <span class="hm-desc">Enter a known total heat gain value in watts</span>
+          </button>
+          <button class="heat-method-btn" onclick="setHeatMode('components')" id="htab-components">
+            <div class="hm-dot"></div>
+            <span class="hm-title">Component losses</span>
+            <span class="hm-desc">Build up from individual device power losses</span>
+          </button>
+        </div>
+
+        <!-- Direct entry -->
+        <div class="heat-input-panel" id="heat-direct">
+          <div class="field-row cols2">
+            <div class="field required">
+              <label for="heatGainDirect">Total heat gain Q<sub>G</sub></label>
+              <div class="field-wrap">
+                <input type="number" id="heatGainDirect" value="500" min="0" max="1000000" step="1" aria-label="Total internal heat gain in watts" oninput="liveCalc()">
+                <span class="field-unit">W</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="c1Factor">Correction factor c<sub>1</sub></label>
+              <select id="c1Factor" onchange="calculate()">
+                <option value="1.0">1.0 — Normal (no correction)</option>
+                <option value="0.5">0.5 — 50% duty cycle</option>
+                <option value="0.75">0.75 — 75% duty cycle</option>
+                <option value="0.25">0.25 — 25% duty cycle</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Component losses -->
+        <div class="heat-input-panel" id="heat-components" style="display:none;">
+          <table class="comp-table" id="compTable">
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Qty</th>
+                <th>Loss (W ea.)</th>
+                <th>Total W</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="compBody"></tbody>
+          </table>
+          <button class="add-comp-btn" onclick="addComponent()">+ Add component</button>
+          <!-- Component library -->
+          <div class="comp-library-row">
+            <select id="compLibrary">
+              <option value="">— Add from library —</option>
+              <optgroup label="Circuit breakers">
+                <option value="MCB 6A B-curve|1|3">MCB 6A B-curve — 3 W</option>
+                <option value="MCB 16A C-curve|1|5">MCB 16A C-curve — 5 W</option>
+                <option value="MCB 32A C-curve|1|8">MCB 32A C-curve — 8 W</option>
+                <option value="MCB 63A C-curve|1|12">MCB 63A C-curve — 12 W</option>
+                <option value="MCCB 100A|1|15">MCCB 100A — 15 W</option>
+                <option value="MCCB 250A|1|28">MCCB 250A — 28 W</option>
+                <option value="MCCB 400A|1|45">MCCB 400A — 45 W</option>
+                <option value="MCCB 630A|1|65">MCCB 630A — 65 W</option>
+                <option value="MCCB 800A|1|85">MCCB 800A — 85 W</option>
+                <option value="ACB 1600A|1|150">ACB 1600A — 150 W</option>
+                <option value="ACB 2500A|1|230">ACB 2500A — 230 W</option>
+                <option value="ACB 3200A|1|300">ACB 3200A — 300 W</option>
+                <option value="ACB 4000A|1|380">ACB 4000A — 380 W</option>
+              </optgroup>
+              <optgroup label="Contactors">
+                <option value="Contactor 9A|1|3">Contactor 9A — 3 W</option>
+                <option value="Contactor 25A|1|5">Contactor 25A — 5 W</option>
+                <option value="Contactor 40A|1|7">Contactor 40A — 7 W</option>
+                <option value="Contactor 65A|1|10">Contactor 65A — 10 W</option>
+                <option value="Contactor 95A|1|14">Contactor 95A — 14 W</option>
+                <option value="Contactor 150A|1|20">Contactor 150A — 20 W</option>
+                <option value="Contactor 250A|1|30">Contactor 250A — 30 W</option>
+              </optgroup>
+              <optgroup label="Variable speed drives">
+                <option value="VFD 1.5 kW|1|60">VFD 1.5 kW — 60 W</option>
+                <option value="VFD 4 kW|1|160">VFD 4 kW — 160 W</option>
+                <option value="VFD 7.5 kW|1|300">VFD 7.5 kW — 300 W</option>
+                <option value="VFD 11 kW|1|440">VFD 11 kW — 440 W</option>
+                <option value="VFD 22 kW|1|880">VFD 22 kW — 880 W</option>
+                <option value="VFD 37 kW|1|1480">VFD 37 kW — 1480 W</option>
+                <option value="VFD 55 kW|1|2200">VFD 55 kW — 2200 W</option>
+                <option value="VFD 75 kW|1|3000">VFD 75 kW — 3000 W</option>
+              </optgroup>
+              <optgroup label="Soft starters">
+                <option value="Soft starter 22 kW|1|130">Soft starter 22 kW — 130 W</option>
+                <option value="Soft starter 45 kW|1|260">Soft starter 45 kW — 260 W</option>
+                <option value="Soft starter 75 kW|1|430">Soft starter 75 kW — 430 W</option>
+              </optgroup>
+              <optgroup label="Transformers">
+                <option value="CT 100/5A|1|2">CT 100/5A — 2 W</option>
+                <option value="CT 400/5A|1|4">CT 400/5A — 4 W</option>
+                <option value="CT 800/5A|1|6">CT 800/5A — 6 W</option>
+                <option value="Control TX 160VA|1|10">Control TX 160VA — 10 W</option>
+                <option value="Control TX 400VA|1|20">Control TX 400VA — 20 W</option>
+                <option value="Control TX 1kVA|1|50">Control TX 1kVA — 50 W</option>
+              </optgroup>
+              <optgroup label="Metering / electronics">
+                <option value="Power meter|1|3">Power meter — 3 W</option>
+                <option value="PLC module|1|5">PLC module — 5 W</option>
+                <option value="HMI 7 inch|1|12">HMI 7 inch — 12 W</option>
+                <option value="24V PSU 5A|1|25">24V PSU 5A — 25 W</option>
+                <option value="24V PSU 10A|1|48">24V PSU 10A — 48 W</option>
+                <option value="RCD 40A|1|4">RCD 40A — 4 W</option>
+                <option value="RCBO 16A|1|6">RCBO 16A — 6 W</option>
+                <option value="Surge arrester|1|2">Surge arrester — 2 W</option>
+                <option value="Capacitor bank 50 kVAr|1|150">Capacitor bank 50 kVAr — 150 W</option>
+              </optgroup>
+              <optgroup label="Busbars (per metre)">
+                <option value="Busbar 400A (per m)|1|15">Busbar 400A per m — 15 W</option>
+                <option value="Busbar 800A (per m)|1|30">Busbar 800A per m — 30 W</option>
+                <option value="Busbar 1600A (per m)|1|55">Busbar 1600A per m — 55 W</option>
+                <option value="Busbar 2500A (per m)|1|90">Busbar 2500A per m — 90 W</option>
+                <option value="Busbar 3200A (per m)|1|120">Busbar 3200A per m — 120 W</option>
+                <option value="Busbar 4000A (per m)|1|150">Busbar 4000A per m — 150 W</option>
+              </optgroup>
+            </select>
+            <button class="comp-library-add" onclick="addFromLibrary()">+ Add</button>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+            <span style="font-family:var(--font-head);font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Total Q<sub>G</sub></span>
+            <span style="font-family:var(--font-mono);font-size:20px;font-weight:600;color:var(--amber);" id="compTotal">0 W</span>
+          </div>
+          <div class="field-row" style="margin-top:10px;">
+            <div class="field">
+              <label for="c1FactorComp">Correction factor c<sub>1</sub></label>
+              <select id="c1FactorComp" onchange="calculate()">
+                <option value="1.0">1.0 — Normal</option>
+                <option value="0.5">0.5 — 50% duty cycle</option>
+                <option value="0.75">0.75 — 75% duty cycle</option>
+                <option value="0.25">0.25 — 25% duty cycle</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Thermal Conditions -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-number">4</span>
+        <span class="section-title">Thermal Conditions</span>
+      </div>
+      <div class="section-body">
+        <div class="field-row cols2">
+          <div class="field required" id="field-ti">
+            <label for="tempInternal">Max internal temp T<sub>i</sub></label>
+            <div class="field-wrap">
+              <input type="number" id="tempInternal" value="40" min="-20" max="100" step="0.5" aria-label="Maximum internal temperature °C" oninput="liveCalc()">
+              <span class="field-unit">°C</span>
+            </div>
+          </div>
+          <div class="field required" id="field-tu">
+            <label for="tempAmbient">Max ambient temp T<sub>u</sub></label>
+            <div class="field-wrap">
+              <input type="number" id="tempAmbient" value="25" min="-40" max="60" step="0.5" aria-label="Maximum ambient temperature °C" oninput="liveCalc()">
+              <span class="field-unit">°C</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Altitude selector -->
+        <div id="altSection">
+          <div class="sub-section">
+            <div class="sub-section-title">Height above sea level — air constant f (m³K/Wh)</div>
+            <div class="alt-visual" id="altVisual"></div>
+          </div>
+        </div>
+
+        <!-- c2 factor for natural convection -->
+        <div class="sub-section" id="c2Section" style="display:none;">
+          <div class="sub-section-title">Surface finish correction c<sub>2</sub></div>
+          <div class="field-row cols2">
+            <div class="field">
+              <label for="c2Factor">Colour / finish</label>
+              <select id="c2Factor" onchange="calculate()">
+                <option value="1.0">1.0 — Matt / dark finish</option>
+                <option value="0.9">0.9 — Semi-gloss</option>
+                <option value="0.5">0.5 — Bright / polished metal</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Ventilation Method (fan mode only) -->
+    <div class="section-card" id="ventSection">
+      <div class="section-header">
+        <span class="section-number">5</span>
+        <span class="section-title">Ventilation Method</span>
+      </div>
+      <div class="section-body">
+        <div class="vent-method-grid" id="ventGrid"></div>
+
+        <!-- Forced vent extras -->
+        <div id="forcedExtras" style="display:none;margin-top:12px;">
+          <div class="field-row cols2">
+            <div class="field">
+              <label for="inletRise">Fan inlet temp rise ΔT<sub>inlet</sub></label>
+              <div class="field-wrap">
+                <input type="number" id="inletRise" value="0" min="0" max="30" step="0.5" oninput="liveCalc()">
+                <span class="field-unit">K</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="fanEff">Fan efficiency η</label>
+              <select id="fanEff" onchange="calculate()">
+                <option value="1.0">1.0 — Ideal (no derating)</option>
+                <option value="0.9">0.9 — Small axial fan</option>
+                <option value="0.8">0.8 — Typical centrifugal</option>
+                <option value="0.7">0.7 — Conservative estimate</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Heat exchanger extras -->
+        <div id="hxExtras" style="display:none;margin-top:12px;">
+          <div class="field-row cols2">
+            <div class="field">
+              <label for="hxEff">HX effectiveness ε</label>
+              <select id="hxEff" onchange="calculate()">
+                <option value="0.85">0.85 — High efficiency</option>
+                <option value="0.75">0.75 — Standard</option>
+                <option value="0.65">0.65 — Budget unit</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            <div class="field" id="hxEffCustomField" style="display:none;">
+              <label for="hxEffCustom">Custom ε</label>
+              <input type="number" id="hxEffCustom" value="0.80" min="0.1" max="1.0" step="0.01" oninput="liveCalc()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Air conditioning extras -->
+        <div id="acExtras" style="display:none;margin-top:12px;">
+          <div class="field-row cols2">
+            <div class="field">
+              <label for="acCOP">A/C COP</label>
+              <select id="acCOP" onchange="calculate()">
+                <option value="3.0">3.0 — High efficiency</option>
+                <option value="2.5">2.5 — Standard split</option>
+                <option value="2.0">2.0 — Compact unit</option>
+                <option value="1.5">1.5 — Conservative</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="acSafety">Safety factor S<sub>f</sub></label>
+              <select id="acSafety" onchange="calculate()">
+                <option value="1.1">1.1 — Low risk</option>
+                <option value="1.2" selected>1.2 — Standard (recommended)</option>
+                <option value="1.3">1.3 — High reliability</option>
+                <option value="1.5">1.5 — Mission critical</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Additional Options -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-number">6</span>
+        <span class="section-title">Additional Options</span>
+      </div>
+      <div class="section-body">
+        <div class="toggle-row" onclick="toggleOpt('solar')">
+          <div class="toggle-switch" id="sw-solar" role="switch" aria-checked="false" tabindex="0"></div>
+          <div class="toggle-label">
+            <strong>Solar radiation gain</strong>
+            External solar loading on enclosure surface
+          </div>
+        </div>
+        <div id="solar-opts" style="display:none;padding:10px 0 4px;">
+          <div class="field-row cols2">
+            <div class="field">
+              <label for="solarE">Solar irradiance E (W/m²)</label>
+              <input type="number" id="solarE" value="500" min="0" max="1200" step="10" oninput="liveCalc()">
+            </div>
+            <div class="field">
+              <label for="solarAlpha">Absorptivity α</label>
+              <select id="solarAlpha" onchange="calculate()">
+                <option value="0.9">0.9 — Dark/matt</option>
+                <option value="0.7">0.7 — Standard grey</option>
+                <option value="0.5">0.5 — Light colour</option>
+                <option value="0.3">0.3 — Reflective/white</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="solarArea">Exposed surface area A<sub>solar</sub> (m²) — leave 0 for auto</label>
+              <div class="field-wrap">
+                <input type="number" id="solarArea" value="0" min="0" max="100" step="0.1" oninput="liveCalc()">
+                <span class="field-unit">m²</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toggle-row" onclick="toggleOpt('ip')">
+          <div class="toggle-switch" id="sw-ip" role="switch" aria-checked="false" tabindex="0"></div>
+          <div class="toggle-label">
+            <strong>IP rating derating</strong>
+            Reduced surface heat dissipation for sealed enclosures
+          </div>
+        </div>
+        <div id="ip-opts" style="display:none;padding:10px 0 4px;">
+          <div class="field-row">
+            <div class="field">
+              <label for="ipRating">IP rating</label>
+              <select id="ipRating" onchange="calculate()">
+                <option value="1.0">IP00–IP30 — No derating (k unchanged)</option>
+                <option value="0.9">IP31–IP44 — k × 0.90</option>
+                <option value="0.8">IP54 — k × 0.80</option>
+                <option value="0.7">IP65 — k × 0.70</option>
+                <option value="0.6">IP66/IP67 — k × 0.60</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="toggle-row" onclick="toggleOpt('safety')">
+          <div class="toggle-switch" id="sw-safety" role="switch" aria-checked="false" tabindex="0"></div>
+          <div class="toggle-label">
+            <strong>Safety margin</strong>
+            Apply additional margin to final result
+          </div>
+        </div>
+        <div id="safety-opts" style="display:none;padding:10px 0 4px;">
+          <div class="field-row cols2">
+            <div class="field">
+              <label for="safetyFactor">Safety factor</label>
+              <select id="safetyFactor" onchange="calculate()">
+                <option value="1.0">1.0 — None</option>
+                <option value="1.1">1.1 — +10%</option>
+                <option value="1.2">1.2 — +20% (standard)</option>
+                <option value="1.25">1.25 — +25%</option>
+                <option value="1.5">1.5 — +50% (conservative)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="toggle-row" onclick="toggleOpt('cable')">
+          <div class="toggle-switch" id="sw-cable" role="switch" aria-checked="false" tabindex="0"></div>
+          <div class="toggle-label">
+            <strong>Cable/busbar heat entry</strong>
+            Heat conducted in via cables from external sources
+          </div>
+        </div>
+        <div id="cable-opts" style="display:none;padding:10px 0 4px;">
+          <div class="field-row">
+            <div class="field">
+              <label for="cableHeat">Cable heat entry Q<sub>cable</sub> (W)</label>
+              <div class="field-wrap">
+                <input type="number" id="cableHeat" value="50" min="0" max="10000" step="1" oninput="liveCalc()">
+                <span class="field-unit">W</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calculate()" aria-label="Calculate switchboard heat load">Calculate Heat Load</button>
+  </div>
+
+  <!-- RIGHT COLUMN: Sidebar -->
+  <div class="sidebar">
+
+    <!-- Results panel -->
+    <div class="results-panel" id="resultsPanel">
+      <div class="results-header">
+        <span class="results-title">Results</span>
+        <span class="results-badge" id="modeLabel"></span>
+      </div>
+
+      <div id="primaryResult"></div>
+
+      <div class="metrics-grid" id="metricsGrid" style="display:none;"></div>
+
+      <div class="steps-section" id="stepsSection" style="display:none;">
+        <div class="steps-label">Calculation steps</div>
+        <div id="stepsContent"></div>
+      </div>
+
+      <div class="extra-results" id="extraResults" style="display:none;"></div>
+
+      <div style="padding:0 1.25rem 1.25rem;" id="alertsSection"></div>
+    </div>
+
+    <!-- Reference tables -->
+    <div class="ref-panel">
+      <h2 class="ref-header">Air constant f — Altitude correction</h2>
+      <table class="ref-table">
+        <thead><tr><th scope="col">Altitude (m)</th><th scope="col">f (m³K/Wh)</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>3.1</td></tr>
+          <tr><td>500</td><td>3.3</td></tr>
+          <tr><td>1000</td><td>3.5</td></tr>
+          <tr><td>1500</td><td>3.8</td></tr>
+          <tr><td>2000</td><td>4.1</td></tr>
+          <tr><td>2500</td><td>4.4</td></tr>
+          <tr><td>3000</td><td>4.8</td></tr>
+          <tr><td>3500</td><td>5.2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ref-panel">
+      <h2 class="ref-header">Heat transfer k — Material reference</h2>
+      <table class="ref-table">
+        <thead><tr><th scope="col">Material</th><th scope="col">k (W/m²K)</th></tr></thead>
+        <tbody>
+          <tr><td>Sheet steel</td><td>5.5</td></tr>
+          <tr><td>Aluminium</td><td>5.5</td></tr>
+          <tr><td>Stainless steel</td><td>5.1</td></tr>
+          <tr><td>Plastic / polyester</td><td>3.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ref-panel">
+      <h2 class="ref-header">Area formulae — Installation types</h2>
+      <table class="ref-table">
+        <thead><tr><th scope="col">Configuration</th><th scope="col">Formula</th></tr></thead>
+        <tbody>
+          <tr><td>Free-standing single</td><td>1.8H(W+D)+1.4WD</td></tr>
+          <tr><td>Wall-mounted single</td><td>1.4W(H+D)+1.8HD</td></tr>
+          <tr><td>Free-standing, end</td><td>1.4D(W+H)+1.8WH</td></tr>
+          <tr><td>Wall-mounted, end</td><td>1.4H(W+D)+1.4WD</td></tr>
+          <tr><td>Free-standing, mid</td><td>1.8WH+1.4WD+HD</td></tr>
+          <tr><td>Wall-mounted, mid</td><td>1.4W(H+D)+HD</td></tr>
+          <tr><td>Wall, roof covered</td><td>1.4WH+0.7WD+HD</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ SAVE/LOAD MODAL ══════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="saveModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSaveModal()">&times;</button>
+    <h3 id="modalTitle">Save / Load Configuration</h3>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ═══ JAVASCRIPT ═══════════════════════════════════════════════════════ -->
+<script>
+// ─── State ────────────────────────────────────────────────────────────────
+var mode = 'fan';
+var heatMode = 'direct';
+var ventMethod = 'fan-forced';
+var altF = 3.1;
+var opts = { solar: false, ip: false, safety: false, cable: false };
+var liveEnabled = false;
+var lastCalcResult = null;
+
+var altData = [
+  { alt: 0, f: 3.1 }, { alt: 500, f: 3.3 }, { alt: 1000, f: 3.5 },
+  { alt: 1500, f: 3.8 }, { alt: 2000, f: 4.1 }, { alt: 2500, f: 4.4 },
+  { alt: 3000, f: 4.8 }, { alt: 3500, f: 5.2 }
+];
+
+var ventMethods = [
+  { id: 'fan-forced', title: 'Forced ventilation', desc: 'Fan + filter; air drawn through enclosure' },
+  { id: 'heat-exchanger', title: 'Heat exchanger', desc: 'Closed-loop; no internal/external air mixing' },
+  { id: 'air-cond', title: 'Air conditioning', desc: 'Refrigerant-based cooling; COP applied' },
+  { id: 'natural-vent', title: 'Natural ventilation', desc: 'Open vents only; no fan sizing' },
+];
+
+var installLabels = {
+  free_single:    'A = 1.8·H·(W+D) + 1.4·W·D',
+  wall_single:    'A = 1.4·W·(H+D) + 1.8·H·D',
+  free_suite_end: 'A = 1.4·D·(W+H) + 1.8·W·H',
+  wall_suite_end: 'A = 1.4·H·(W+D) + 1.4·W·D',
+  free_suite_mid: 'A = 1.8·W·H + 1.4·W·D + H·D',
+  wall_suite_mid: 'A = 1.4·W·(H+D) + H·D',
+  wall_suite_roof:'A = 1.4·W·H + 0.7·W·D + H·D',
+};
+
+var installDescriptions = {
+  free_single:    'All 6 faces exposed',
+  wall_single:    'Rear face against wall',
+  free_suite_end: 'One side shared, free-standing',
+  wall_suite_end: 'One side shared + rear against wall',
+  free_suite_mid: 'Both sides shared, free-standing',
+  wall_suite_mid: 'Both sides shared + rear against wall',
+  wall_suite_roof:'Both sides + roof + rear covered',
+};
+
+var components = [];
+
+// ─── Init ─────────────────────────────────────────────────────────────────
+window.onload = function() {
+  buildAltVisual();
+  buildVentGrid();
+  addComponent('MCB / MCCB', 1, 8);
+  addComponent('Contactor 25A', 2, 5);
+  addComponent('Power meter', 1, 3);
+  updateAreaFormula();
+  updateSurfaceArea();
+  updateCompTotal();
+  updateInstallDiagram();
+  // Run initial calculation so results are immediately visible
+  calculate();
+  // Set today's date
+  var today = new Date();
+  document.getElementById('projDate').value = today.toLocaleDateString('en-AU', { year: 'numeric', month: 'short', day: 'numeric' });
+  document.getElementById('material').addEventListener('change', function() {
+    document.getElementById('customKField').style.display = this.value === 'custom' ? '' : 'none';
+  });
+  document.getElementById('hxEff').addEventListener('change', function() {
+    document.getElementById('hxEffCustomField').style.display = this.value === 'custom' ? '' : 'none';
+  });
+  ['height','width','depth'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', updateSurfaceArea);
+  });
+  document.getElementById('installation').addEventListener('change', function() {
+    updateSurfaceArea();
+    updateInstallDiagram();
+  });
+  // Keyboard accessibility for toggle switches
+  document.querySelectorAll('.toggle-switch').forEach(function(sw) {
+    sw.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sw.closest('.toggle-row').click(); }
+    });
+  });
+  // Keyboard nav for mode selector
+  document.querySelectorAll('.mode-btn').forEach(function(btn, i, btns) {
+    btn.addEventListener('keydown', function(e) {
+      var idx = i;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); idx = (i + 1) % btns.length; }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); idx = (i - 1 + btns.length) % btns.length; }
+      if (idx !== i) { btns[idx].click(); btns[idx].focus(); }
+    });
+  });
+};
+
+// ─── Project details ──────────────────────────────────────────────────────
+function toggleProject() {
+  var body = document.getElementById('projBody');
+  var toggle = document.getElementById('projToggle');
+  var isOpen = body.classList.toggle('open');
+  toggle.classList.toggle('open', isOpen);
+  if (!isOpen) updateProjSummary();
+}
+function updateProjSummary() {
+  var name = document.getElementById('projName').value;
+  var num = document.getElementById('projNumber').value;
+  var parts = [];
+  if (name) parts.push(name);
+  if (num) parts.push(num);
+  document.getElementById('projSummary').textContent = parts.length ? parts.join(' — ') : 'Click to add project information';
+}
+function getProjectDetails() {
+  return {
+    name: document.getElementById('projName').value,
+    number: document.getElementById('projNumber').value,
+    client: document.getElementById('projClient').value,
+    engineer: document.getElementById('projEngineer').value,
+    location: document.getElementById('projLocation').value,
+    date: document.getElementById('projDate').value,
+    notes: document.getElementById('projNotes').value
+  };
+}
+
+// ─── Live calculation ─────────────────────────────────────────────────────
+function toggleLiveCalc() {
+  liveEnabled = !liveEnabled;
+  document.getElementById('liveBtn').classList.toggle('live-active', liveEnabled);
+  if (liveEnabled) calculate();
+}
+function liveCalc() { if (liveEnabled) calculate(); }
+
+// ─── Installation description (text only) ────────────────────────────────
+function updateInstallDiagram() {
+  var inst = document.getElementById('installation').value;
+  var el = document.getElementById('installDesc');
+  // Face exposure descriptions
+  var faceDesc = {
+    free_single:    'All 6 faces exposed to free air',
+    wall_single:    'Rear face against wall; 5 faces exposed',
+    free_suite_end: 'One side shared with adjacent panel; 5 faces exposed',
+    wall_suite_end: 'One side shared + rear against wall; 4 faces exposed',
+    free_suite_mid: 'Both sides shared with adjacent panels; 4 faces exposed',
+    wall_suite_mid: 'Both sides shared + rear against wall; 3 faces exposed',
+    wall_suite_roof:'Both sides + roof + rear covered; 2 faces exposed',
+  };
+  el.innerHTML = '<div class="info-box" style="margin-top:0;">' + (faceDesc[inst] || '') + '</div>';
+}
+
+// ─── Altitude visual ─────────────────────────────────────────────────────
+function buildAltVisual() {
+  var el = document.getElementById('altVisual');
+  el.innerHTML = '';
+  altData.forEach(function(d, i) {
+    var div = document.createElement('div');
+    div.className = 'alt-opt' + (i === 0 ? ' sel' : '');
+    div.setAttribute('role', 'radio');
+    div.setAttribute('aria-checked', i === 0 ? 'true' : 'false');
+    div.setAttribute('tabindex', i === 0 ? '0' : '-1');
+    div.innerHTML = '<div class="alt-opt-val">' + d.alt + 'm</div><div class="alt-opt-f">f=' + d.f + '</div>';
+    div.onclick = function() {
+      altF = d.f;
+      document.querySelectorAll('.alt-opt').forEach(function(x) { x.classList.remove('sel'); x.setAttribute('aria-checked','false'); x.setAttribute('tabindex','-1'); });
+      div.classList.add('sel');
+      div.setAttribute('aria-checked','true');
+      div.setAttribute('tabindex','0');
+      calculate();
+    };
+    div.addEventListener('keydown', function(e) {
+      var opts = Array.from(document.querySelectorAll('.alt-opt'));
+      var idx = opts.indexOf(div);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); opts[(idx+1) % opts.length].click(); opts[(idx+1) % opts.length].focus(); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); opts[(idx-1+opts.length) % opts.length].click(); opts[(idx-1+opts.length) % opts.length].focus(); }
+    });
+    el.appendChild(div);
+  });
+}
+
+// ─── Vent method grid ────────────────────────────────────────────────────
+function buildVentGrid() {
+  var el = document.getElementById('ventGrid');
+  el.innerHTML = '';
+  ventMethods.forEach(function(v) {
+    var div = document.createElement('div');
+    div.className = 'vent-card' + (v.id === ventMethod ? ' sel' : '');
+    div.setAttribute('role', 'radio');
+    div.setAttribute('tabindex', v.id === ventMethod ? '0' : '-1');
+    div.innerHTML = '<div class="vent-card-title">' + v.title + '</div><div class="vent-card-desc">' + v.desc + '</div>';
+    div.onclick = function() {
+      ventMethod = v.id;
+      document.querySelectorAll('.vent-card').forEach(function(x) { x.classList.remove('sel'); x.setAttribute('tabindex','-1'); });
+      div.classList.add('sel');
+      div.setAttribute('tabindex','0');
+      document.getElementById('forcedExtras').style.display = (v.id === 'fan-forced') ? '' : 'none';
+      document.getElementById('hxExtras').style.display = (v.id === 'heat-exchanger') ? '' : 'none';
+      document.getElementById('acExtras').style.display = (v.id === 'air-cond') ? '' : 'none';
+      calculate();
+    };
+    el.appendChild(div);
+  });
+}
+
+// ─── Mode switching ──────────────────────────────────────────────────────
+function setMode(m) {
+  mode = m;
+  ['fan','heater','natural'].forEach(function(id) {
+    var btn = document.getElementById('btn-' + id);
+    btn.classList.toggle('active', id === m);
+    btn.setAttribute('aria-selected', id === m ? 'true' : 'false');
+    btn.setAttribute('tabindex', id === m ? '0' : '-1');
+  });
+  document.getElementById('altSection').style.display = (m === 'fan' || m === 'natural') ? '' : 'none';
+  document.getElementById('c2Section').style.display = m === 'natural' ? '' : 'none';
+  document.getElementById('ventSection').style.display = m === 'fan' ? '' : 'none';
+  // Always recalculate on mode change so results update immediately
+  calculate();
+}
+
+// ─── Heat mode ───────────────────────────────────────────────────────────
+function setHeatMode(m) {
+  heatMode = m;
+  document.getElementById('htab-direct').classList.toggle('active', m === 'direct');
+  document.getElementById('htab-components').classList.toggle('active', m === 'components');
+  document.getElementById('heat-direct').style.display = m === 'direct' ? '' : 'none';
+  document.getElementById('heat-components').style.display = m === 'components' ? '' : 'none';
+  calculate();
+}
+
+// ─── Area formula display ────────────────────────────────────────────────
+function updateAreaFormula() {
+  var inst = document.getElementById('installation').value;
+  document.getElementById('areaFormulaBox').textContent = installLabels[inst];
+  updateSurfaceArea();
+}
+
+function updateK() {
+  document.getElementById('customKField').style.display =
+    document.getElementById('material').value === 'custom' ? '' : 'none';
+}
+
+function getArea(inst, H, W, D) {
+  switch(inst) {
+    case 'free_single':    return 1.8*H*(W+D) + 1.4*W*D;
+    case 'wall_single':    return 1.4*W*(H+D) + 1.8*H*D;
+    case 'free_suite_end': return 1.4*D*(W+H) + 1.8*W*H;
+    case 'wall_suite_end': return 1.4*H*(W+D) + 1.4*W*D;
+    case 'free_suite_mid': return 1.8*W*H + 1.4*W*D + H*D;
+    case 'wall_suite_mid': return 1.4*W*(H+D) + H*D;
+    case 'wall_suite_roof':return 1.4*W*H + 0.7*W*D + H*D;
+    default: return 0;
+  }
+}
+
+function updateSurfaceArea() {
+  var H = parseFloat(document.getElementById('height').value || 0) / 1000;
+  var W = parseFloat(document.getElementById('width').value || 0) / 1000;
+  var D = parseFloat(document.getElementById('depth').value || 0) / 1000;
+  var inst = document.getElementById('installation').value;
+  var A = getArea(inst, H, W, D);
+  document.getElementById('surfaceAreaDisplay').textContent =
+    'Effective surface area A = ' + A.toFixed(3) + ' m²  (H=' + (H*1000).toFixed(0) + ' W=' + (W*1000).toFixed(0) + ' D=' + (D*1000).toFixed(0) + ' mm)';
+}
+
+// ─── Component table ─────────────────────────────────────────────────────
+function addComponent(name, qty, loss) {
+  var id = Date.now() + Math.random();
+  components.push({ id: id, name: name || 'New component', qty: qty || 1, loss: loss || 0 });
+  renderComponents();
+}
+
+function addFromLibrary() {
+  var sel = document.getElementById('compLibrary');
+  if (!sel.value) return;
+  var parts = sel.value.split('|');
+  addComponent(parts[0], parseInt(parts[1]), parseFloat(parts[2]));
+  sel.selectedIndex = 0;
+  liveCalc();
+}
+
+function removeComponent(id) {
+  components = components.filter(function(c) { return c.id !== id; });
+  renderComponents();
+  liveCalc();
+}
+
+function renderComponents() {
+  var tbody = document.getElementById('compBody');
+  tbody.innerHTML = '';
+  components.forEach(function(c) {
+    var total = (c.qty * c.loss).toFixed(1);
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td><input type="text" value="' + c.name + '" style="background:var(--input-bg);border:1px solid var(--input-border);border-radius:6px;color:var(--text-primary);font-size:15px;padding:8px 10px;width:100%;" onchange="updateComp(' + c.id + ',\'name\',this.value)"></td>' +
+      '<td><input type="number" value="' + c.qty + '" min="1" max="1000" style="background:var(--input-bg);border:1px solid var(--input-border);border-radius:6px;color:var(--text-primary);font-family:var(--font-mono);font-size:15px;padding:8px 10px;width:64px;" onchange="updateComp(' + c.id + ',\'qty\',+this.value)" oninput="liveCalc()"></td>' +
+      '<td><input type="number" value="' + c.loss + '" min="0" max="100000" style="background:var(--input-bg);border:1px solid var(--input-border);border-radius:6px;color:var(--text-primary);font-family:var(--font-mono);font-size:15px;padding:8px 10px;width:84px;" onchange="updateComp(' + c.id + ',\'loss\',+this.value)" oninput="liveCalc()"></td>' +
+      '<td class="comp-loss">' + total + '</td>' +
+      '<td><button class="del-btn" onclick="removeComponent(' + c.id + ')" aria-label="Remove component">×</button></td>';
+    tbody.appendChild(tr);
+  });
+  updateCompTotal();
+}
+
+function updateComp(id, field, val) {
+  var c = components.find(function(x) { return x.id === id; });
+  if (c) { c[field] = val; renderComponents(); }
+}
+
+function updateCompTotal() {
+  var total = components.reduce(function(s, c) { return s + c.qty * c.loss; }, 0);
+  document.getElementById('compTotal').textContent = total.toFixed(1) + ' W';
+  return total;
+}
+
+// ─── Toggle options ──────────────────────────────────────────────────────
+function toggleOpt(key) {
+  opts[key] = !opts[key];
+  var sw = document.getElementById('sw-' + key);
+  sw.classList.toggle('on', opts[key]);
+  sw.setAttribute('aria-checked', opts[key] ? 'true' : 'false');
+  document.getElementById(key + '-opts').style.display = opts[key] ? '' : 'none';
+  calculate();
+}
+
+// ─── Input validation ────────────────────────────────────────────────────
+function clearErrors() {
+  document.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('field-error'); });
+  document.querySelectorAll('.error-msg').forEach(function(el) { el.remove(); });
+}
+
+function setError(fieldId, msg) {
+  var field = document.getElementById(fieldId);
+  if (!field) return;
+  var wrapper = field.closest('.field');
+  if (wrapper) {
+    wrapper.classList.add('field-error');
+    var em = document.createElement('div');
+    em.className = 'error-msg';
+    em.textContent = msg;
+    wrapper.appendChild(em);
+  }
+}
+
+function validateInputs() {
+  clearErrors();
+  var valid = true;
+  var H = parseFloat(document.getElementById('height').value);
+  var W = parseFloat(document.getElementById('width').value);
+  var D = parseFloat(document.getElementById('depth').value);
+  var Ti = parseFloat(document.getElementById('tempInternal').value);
+  var Tu = parseFloat(document.getElementById('tempAmbient').value);
+
+  if (isNaN(H) || H < 100 || H > 5000) { setError('field-height', 'Height must be 100–5000 mm'); valid = false; }
+  if (isNaN(W) || W < 100 || W > 5000) { setError('field-width', 'Width must be 100–5000 mm'); valid = false; }
+  if (isNaN(D) || D < 100 || D > 5000) { setError('field-depth', 'Depth must be 100–5000 mm'); valid = false; }
+  if (isNaN(Ti)) { setError('field-ti', 'Enter a valid temperature'); valid = false; }
+  if (isNaN(Tu)) { setError('field-tu', 'Enter a valid temperature'); valid = false; }
+  if (!isNaN(Ti) && !isNaN(Tu) && Ti <= Tu) {
+    setError('field-ti', 'Ti must exceed Tu');
+    valid = false;
+  }
+
+  // Aspect ratio check
+  if (valid) {
+    var maxDim = Math.max(H, W, D);
+    var minDim = Math.min(H, W, D);
+    if (maxDim / minDim > 20) {
+      showAlert('warn', 'Extreme aspect ratio detected (' + (maxDim/minDim).toFixed(0) + ':1). Check dimensions are correct.');
+    }
+  }
+
+  return valid;
+}
+
+// ─── Main calculation ────────────────────────────────────────────────────
+function calculate() {
+  if (!validateInputs()) return;
+
+  var H = parseFloat(document.getElementById('height').value) / 1000;
+  var W = parseFloat(document.getElementById('width').value) / 1000;
+  var D = parseFloat(document.getElementById('depth').value) / 1000;
+  var Ti = parseFloat(document.getElementById('tempInternal').value);
+  var Tu = parseFloat(document.getElementById('tempAmbient').value);
+  var inst = document.getElementById('installation').value;
+
+  var matVal = document.getElementById('material').value;
+  var kBase = matVal === 'custom'
+    ? parseFloat(document.getElementById('customK').value)
+    : parseFloat(matVal);
+
+  var ipFactor = opts.ip ? parseFloat(document.getElementById('ipRating').value) : 1.0;
+  var k = kBase * ipFactor;
+
+  var A = getArea(inst, H, W, D);
+  var dT = Ti - Tu;
+
+  // Heat gain
+  var QG_raw;
+  if (heatMode === 'direct') {
+    QG_raw = parseFloat(document.getElementById('heatGainDirect').value) *
+             parseFloat(document.getElementById('c1Factor').value);
+  } else {
+    var c1c = parseFloat(document.getElementById('c1FactorComp').value);
+    QG_raw = updateCompTotal() * c1c;
+  }
+
+  var Q_cable = opts.cable ? parseFloat(document.getElementById('cableHeat').value) : 0;
+
+  var Q_solar = 0;
+  if (opts.solar) {
+    var E = parseFloat(document.getElementById('solarE').value);
+    var alpha = parseFloat(document.getElementById('solarAlpha').value);
+    var solarAreaRaw = parseFloat(document.getElementById('solarArea').value);
+    var A_solar = solarAreaRaw > 0 ? solarAreaRaw : (W * H);
+    Q_solar = E * alpha * A_solar;
+  }
+
+  var QG = QG_raw + Q_cable + Q_solar;
+
+  var c2 = mode === 'natural' ? parseFloat(document.getElementById('c2Factor').value) : 1.0;
+  var QS = k * A * dT * c2;
+
+  var safetyFactor = opts.safety ? parseFloat(document.getElementById('safetyFactor').value) : 1.0;
+
+  var steps = [];
+  steps.push({ sym: 'ΔT', expr: 'Ti − Tu = ' + Ti + ' − ' + Tu, val: dT.toFixed(1) + ' K' });
+  if (opts.ip) steps.push({ sym: 'k*', expr: 'k × IP factor = ' + kBase + ' × ' + ipFactor, val: k.toFixed(2) + ' W/m²K' });
+  steps.push({ sym: 'A', expr: installLabels[inst], val: A.toFixed(3) + ' m²' });
+  steps.push({ sym: 'QS', expr: k.toFixed(2) + ' × ' + A.toFixed(3) + ' × ' + dT.toFixed(1) + (c2 !== 1.0 ? ' × ' + c2 : ''), val: QS.toFixed(1) + ' W' });
+  if (opts.solar) steps.push({ sym: 'Qsol', expr: 'E x alpha x A_solar', val: '+' + Q_solar.toFixed(1) + ' W' });
+  if (opts.cable) steps.push({ sym: 'Qcab', expr: 'Cable heat conducted in', val: '+' + Q_cable.toFixed(1) + ' W' });
+  steps.push({ sym: 'QG', expr: 'Total effective heat gain', val: QG.toFixed(1) + ' W' });
+
+  var panels = [];
+  var primaryLabel, primaryValue, primaryUnit, primarySub;
+  var extras = [];
+  var alerts = [];
+
+  // ── FAN MODE ────────────────────────────────────────────────────────────
+  if (mode === 'fan') {
+    var QR = QG - QS;
+    steps.push({ sym: 'QR', expr: 'QG − QS = ' + QG.toFixed(1) + ' − ' + QS.toFixed(1), val: QR.toFixed(1) + ' W' });
+
+    if (ventMethod === 'natural-vent') {
+      if (QR <= 0) {
+        primaryLabel = 'Natural convection — SUFFICIENT';
+        primaryValue = 'OK';
+        primaryUnit = 'No fan required';
+        primarySub = 'QR = ' + QR.toFixed(1) + ' W ≤ 0';
+        alerts.push({ type: 'success', msg: 'The enclosure dissipates sufficient heat through natural convection. No forced ventilation required.' });
+      } else {
+        primaryLabel = 'Natural convection — INSUFFICIENT';
+        primaryValue = QR.toFixed(0);
+        primaryUnit = 'W residual heat';
+        primarySub = 'Forced cooling required';
+        alerts.push({ type: 'danger', msg: 'Natural convection cannot handle QR = ' + QR.toFixed(1) + ' W. Upgrade to forced ventilation.' });
+      }
+    } else if (ventMethod === 'fan-forced') {
+      if (QR <= 0) {
+        primaryLabel = 'Fan not required';
+        primaryValue = 'None';
+        primaryUnit = 'Natural convection sufficient';
+        primarySub = 'QR = ' + QR.toFixed(1) + ' W';
+        alerts.push({ type: 'success', msg: 'QS exceeds QG — enclosure dissipates heat naturally. Fan not required.' });
+      } else {
+        var eta = parseFloat(document.getElementById('fanEff').value);
+        var inletDT = parseFloat(document.getElementById('inletRise').value) || 0;
+        var effectiveDT = dT - inletDT;
+        if (effectiveDT <= 0) effectiveDT = dT;
+        var V = altF * QR / (effectiveDT * eta);
+        V = V * safetyFactor;
+        steps.push({ sym: 'V', expr: 'f × QR / (ΔT × η) = ' + altF + ' × ' + QR.toFixed(1) + ' / (' + effectiveDT.toFixed(1) + ' × ' + eta + ')', val: (V / safetyFactor).toFixed(1) + ' m³/h' });
+        if (safetyFactor !== 1.0) steps.push({ sym: 'V*', expr: 'V × safety factor ' + safetyFactor, val: V.toFixed(1) + ' m³/h' });
+
+        primaryLabel = 'Required airflow rate';
+        primaryValue = V.toFixed(1);
+        primaryUnit = 'm³/h';
+        primarySub = 'At f = ' + altF + ' m³K/Wh air constant';
+
+        extras.push({ label: 'Litres/second', val: (V / 3.6).toFixed(1) + ' L/s' });
+        extras.push({ label: 'CFM (approx)', val: (V * 0.5886).toFixed(0) + ' CFM' });
+        extras.push({ label: 'Residual heat QR', val: QR.toFixed(1) + ' W' });
+        extras.push({ label: 'Surface loss QS', val: QS.toFixed(1) + ' W' });
+
+        // Reverse calc: max QG for this fan
+        var maxQG_fan = QS + (V / safetyFactor) * effectiveDT * eta / altF;
+        extras.push({ label: 'Max QG for this airflow', val: maxQG_fan.toFixed(0) + ' W' });
+
+        if (V > 2000) alerts.push({ type: 'warn', msg: 'Required airflow > 2000 m³/h. Consider air conditioning or heat exchanger for this enclosure.' });
+      }
+    } else if (ventMethod === 'heat-exchanger') {
+      var hxEffVal = document.getElementById('hxEff').value;
+      var eps = hxEffVal === 'custom'
+        ? parseFloat(document.getElementById('hxEffCustom').value)
+        : parseFloat(hxEffVal);
+      var V_hx = altF * QR / (dT * eps);
+      V_hx = V_hx * safetyFactor;
+      steps.push({ sym: 'V_hx', expr: 'f × QR / (ΔT × ε) = ' + altF + ' × ' + QR.toFixed(1) + ' / (' + dT.toFixed(1) + ' × ' + eps + ')', val: (V_hx / safetyFactor).toFixed(1) + ' m³/h' });
+      if (safetyFactor !== 1.0) steps.push({ sym: 'V*', expr: 'V × safety factor ' + safetyFactor, val: V_hx.toFixed(1) + ' m³/h' });
+
+      primaryLabel = 'Heat exchanger — required circulation';
+      primaryValue = V_hx > 0 ? V_hx.toFixed(1) : '—';
+      primaryUnit = 'm³/h';
+      primarySub = 'ε = ' + eps;
+      extras.push({ label: 'Effectiveness ε', val: eps });
+      extras.push({ label: 'QR to reject', val: QR.toFixed(1) + ' W' });
+      if (QR <= 0) alerts.push({ type: 'success', msg: 'No residual heat to reject — heat exchanger not required.' });
+    } else if (ventMethod === 'air-cond') {
+      var cop = parseFloat(document.getElementById('acCOP').value);
+      var sf = parseFloat(document.getElementById('acSafety').value);
+      var Q_ac = QR > 0 ? QR * sf : 0;
+      var P_elec = Q_ac > 0 ? Q_ac / cop : 0;
+
+      steps.push({ sym: 'Q_ac', expr: 'QR × safety = ' + QR.toFixed(1) + ' × ' + sf, val: Q_ac.toFixed(1) + ' W' });
+      steps.push({ sym: 'P_el', expr: 'Q_ac / COP = ' + Q_ac.toFixed(1) + ' / ' + cop, val: P_elec.toFixed(1) + ' W' });
+
+      primaryLabel = 'A/C cooling capacity required';
+      primaryValue = Q_ac > 0 ? Q_ac.toFixed(0) : '0';
+      primaryUnit = 'W';
+      primarySub = 'COP = ' + cop + ' · Safety = ' + sf;
+      extras.push({ label: 'A/C electrical input', val: P_elec.toFixed(0) + ' W' });
+      extras.push({ label: 'QR (residual)', val: QR.toFixed(1) + ' W' });
+      if (QR <= 0) alerts.push({ type: 'success', msg: 'Natural convection is sufficient — A/C not required.' });
+    }
+
+    panels = [
+      { label: 'Surface area A', val: A.toFixed(3), unit: 'm²', accent: 'info' },
+      { label: 'Surface heat QS', val: QS.toFixed(1), unit: 'W', accent: 'success' },
+      { label: 'Effective QG', val: QG.toFixed(1), unit: 'W', accent: 'warn' },
+      { label: 'Residual QR', val: (QR !== undefined ? QR : 0).toFixed(1), unit: 'W', accent: QR > 0 ? 'danger' : 'success' },
+    ];
+
+  // ── HEATER MODE ─────────────────────────────────────────────────────────
+  } else if (mode === 'heater') {
+    var Q_heat = A * k * Math.abs(dT) * safetyFactor;
+    steps.push({ sym: 'Q', expr: 'A × k × |ΔT| = ' + A.toFixed(3) + ' × ' + k.toFixed(2) + ' × ' + Math.abs(dT).toFixed(1), val: (Q_heat / safetyFactor).toFixed(1) + ' W' });
+    if (safetyFactor !== 1.0) steps.push({ sym: 'Q*', expr: '× safety factor ' + safetyFactor, val: Q_heat.toFixed(1) + ' W' });
+
+    primaryLabel = 'Required heater rating';
+    primaryValue = Q_heat.toFixed(0);
+    primaryUnit = 'W';
+    primarySub = 'Anti-condensation heater';
+
+    panels = [
+      { label: 'Surface area A', val: A.toFixed(3), unit: 'm²', accent: 'info' },
+      { label: 'k coefficient', val: k.toFixed(2), unit: 'W/m²K', accent: 'info' },
+      { label: '|ΔT|', val: Math.abs(dT).toFixed(1), unit: 'K', accent: 'warn' },
+      { label: 'Heater rating', val: Q_heat.toFixed(0), unit: 'W', accent: 'success' },
+    ];
+
+    var nearestStd = Math.ceil(Q_heat / 50) * 50;
+    extras.push({ label: 'Nearest standard size', val: nearestStd + ' W' });
+    // Reverse calc: max ambient for this heater
+    if (nearestStd > 0) {
+      var maxTu_heater = Ti - nearestStd / (A * k * safetyFactor);
+      extras.push({ label: 'Min ambient for ' + nearestStd + 'W heater', val: maxTu_heater.toFixed(1) + ' °C' });
+    }
+    alerts.push({ type: 'info', msg: 'Install heater ≥100 mm from floor, ≥50 mm from side panels, ≥35 mm from thermoplastic materials. Use hygrostat in humid environments.' });
+
+  // ── NATURAL CONVECTION MODE ─────────────────────────────────────────────
+  } else if (mode === 'natural') {
+    var QS_nat = k * A * dT * c2;
+    var QR_nat = QG - QS_nat;
+    steps.push({ sym: 'c₂', expr: 'Surface finish factor', val: c2 });
+    steps.push({ sym: 'QS', expr: k.toFixed(2) + ' × ' + A.toFixed(3) + ' × ' + dT.toFixed(1) + ' × ' + c2, val: QS_nat.toFixed(1) + ' W' });
+    steps.push({ sym: 'QR', expr: QG.toFixed(1) + ' − ' + QS_nat.toFixed(1), val: QR_nat.toFixed(1) + ' W' });
+
+    primaryLabel = QR_nat <= 0 ? 'Natural convection — PASS' : 'Natural convection — FAIL';
+    primaryValue = QR_nat.toFixed(0);
+    primaryUnit = 'W residual';
+    primarySub = QR_nat <= 0 ? 'No forced cooling needed' : 'Forced cooling required';
+
+    panels = [
+      { label: 'Surface area A', val: A.toFixed(3), unit: 'm²', accent: 'info' },
+      { label: 'QS (natural)', val: QS_nat.toFixed(1), unit: 'W', accent: 'success' },
+      { label: 'QG total', val: QG.toFixed(1), unit: 'W', accent: 'warn' },
+      { label: 'QR', val: QR_nat.toFixed(1), unit: 'W', accent: QR_nat <= 0 ? 'success' : 'danger' },
+    ];
+
+    // Reverse calc: max QG for natural convection
+    extras.push({ label: 'Max QG for natural conv.', val: QS_nat.toFixed(0) + ' W' });
+
+    if (QR_nat <= 0) {
+      alerts.push({ type: 'success', msg: 'Natural convection is sufficient. The enclosure dissipates more heat than it generates internally.' });
+    } else {
+      var V_nat = altF * QR_nat / dT;
+      extras.push({ label: 'Fan airflow if upgraded', val: V_nat.toFixed(1) + ' m³/h' });
+      alerts.push({ type: 'danger', msg: 'Natural convection is insufficient. Residual heat QR = ' + QR_nat.toFixed(1) + ' W. Forced ventilation or A/C required.' });
+    }
+  }
+
+  // Store results for PDF export
+  lastCalcResult = {
+    mode: mode, ventMethod: ventMethod,
+    H: H*1000, W: W*1000, D: D*1000, Ti: Ti, Tu: Tu, dT: dT,
+    inst: inst, kBase: kBase, k: k, A: A, QG: QG, QS: QS, c2: c2,
+    primaryLabel: primaryLabel, primaryValue: primaryValue, primaryUnit: primaryUnit, primarySub: primarySub,
+    panels: panels, steps: steps, extras: extras, alerts: alerts,
+    altF: altF, safetyFactor: safetyFactor,
+    heatMode: heatMode, components: components.slice(),
+    opts: JSON.parse(JSON.stringify(opts))
+  };
+
+  // ─── Render results ───────────────────────────────────────────────────
+  var rp = document.getElementById('resultsPanel');
+  rp.classList.add('show');
+
+  document.getElementById('modeLabel').textContent =
+    mode === 'fan' ? 'Cooling Fan' : mode === 'heater' ? 'Heater' : 'Nat. Conv.';
+
+  // Primary
+  var prHtml = '<div class="primary-result">'
+    + '<div class="primary-label">' + primaryLabel + '</div>'
+    + '<div class="primary-value">' + primaryValue + '</div>'
+    + '<div class="primary-unit">' + primaryUnit + '</div>'
+    + (primarySub ? '<div class="primary-sub">' + primarySub + '</div>' : '')
+    + '</div>';
+  document.getElementById('primaryResult').innerHTML = prHtml;
+
+  // Metrics grid
+  var mg = document.getElementById('metricsGrid');
+  mg.style.display = 'grid';
+  mg.innerHTML = panels.map(function(p) {
+    return '<div class="metric-cell accent-' + (p.accent || '') + '"><div class="metric-cell-label">' + p.label + '</div>'
+      + '<div class="metric-cell-value">' + p.val + ' <span class="metric-cell-unit">' + p.unit + '</span></div></div>';
+  }).join('');
+
+  // Steps — Sparky v3 two-line layout
+  var sc = document.getElementById('stepsSection');
+  sc.style.display = '';
+  document.getElementById('stepsContent').innerHTML = steps.map(function(s) {
+    return '<div class="step-row">'
+      + '<div class="step-top"><span class="step-symbol">' + (s.sym || '') + '</span><span class="step-val">' + s.val + '</span></div>'
+      + '<div class="step-expr">' + s.expr + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Extras
+  var er = document.getElementById('extraResults');
+  if (extras.length) {
+    er.style.display = '';
+    er.innerHTML = '<hr style="border:none;border-top:1px solid var(--border);margin:0 0 1rem;">'
+      + extras.map(function(e) {
+        return '<div class="extra-row"><span class="extra-row-label">' + e.label + '</span><span class="extra-row-val">' + e.val + '</span></div>';
+      }).join('');
+  } else {
+    er.style.display = 'none';
+  }
+
+  // Alerts
+  var as = document.getElementById('alertsSection');
+  as.innerHTML = alerts.map(function(a) {
+    return '<div class="info-box ' + a.type + '" style="margin-bottom:6px;">' + a.msg + '</div>';
+  }).join('');
+}
+
+function showAlert(type, msg) {
+  var rp = document.getElementById('resultsPanel');
+  rp.classList.add('show');
+  document.getElementById('primaryResult').innerHTML = '';
+  document.getElementById('metricsGrid').style.display = 'none';
+  document.getElementById('stepsSection').style.display = 'none';
+  document.getElementById('extraResults').style.display = 'none';
+  document.getElementById('alertsSection').innerHTML = '<div class="info-box ' + type + '">' + msg + '</div>';
+}
+
+// Update comp totals on input
+document.addEventListener('input', function(e) {
+  if (e.target.closest('#compBody')) updateCompTotal();
+});
+
+// ─── Save / Load ─────────────────────────────────────────────────────────
+function getConfigState() {
+  return {
+    mode: mode, heatMode: heatMode, ventMethod: ventMethod, altF: altF, opts: opts,
+    project: getProjectDetails(),
+    height: document.getElementById('height').value,
+    width: document.getElementById('width').value,
+    depth: document.getElementById('depth').value,
+    tempInternal: document.getElementById('tempInternal').value,
+    tempAmbient: document.getElementById('tempAmbient').value,
+    installation: document.getElementById('installation').value,
+    material: document.getElementById('material').value,
+    customK: document.getElementById('customK').value,
+    heatGainDirect: document.getElementById('heatGainDirect').value,
+    c1Factor: document.getElementById('c1Factor').value,
+    c1FactorComp: document.getElementById('c1FactorComp').value,
+    components: components,
+    fanEff: document.getElementById('fanEff').value,
+    inletRise: document.getElementById('inletRise').value,
+    ipRating: document.getElementById('ipRating').value,
+    safetyFactor: document.getElementById('safetyFactor').value,
+    solarE: document.getElementById('solarE').value,
+    solarAlpha: document.getElementById('solarAlpha').value,
+    solarArea: document.getElementById('solarArea').value,
+    cableHeat: document.getElementById('cableHeat').value,
+    c2Factor: document.getElementById('c2Factor').value,
+    hxEff: document.getElementById('hxEff').value,
+    hxEffCustom: document.getElementById('hxEffCustom').value,
+    acCOP: document.getElementById('acCOP').value,
+    acSafety: document.getElementById('acSafety').value,
+  };
+}
+
+function loadConfigState(cfg) {
+  if (!cfg) return;
+  // Restore project details
+  if (cfg.project) {
+    var p = cfg.project;
+    if (p.name) document.getElementById('projName').value = p.name;
+    if (p.number) document.getElementById('projNumber').value = p.number;
+    if (p.client) document.getElementById('projClient').value = p.client;
+    if (p.engineer) document.getElementById('projEngineer').value = p.engineer;
+    if (p.location) document.getElementById('projLocation').value = p.location;
+    if (p.date) document.getElementById('projDate').value = p.date;
+    if (p.notes) document.getElementById('projNotes').value = p.notes;
+    updateProjSummary();
+  }
+  // Set simple fields
+  ['height','width','depth','tempInternal','tempAmbient','customK','heatGainDirect',
+   'inletRise','solarE','solarArea','cableHeat','hxEffCustom'].forEach(function(id) {
+    if (cfg[id] !== undefined) document.getElementById(id).value = cfg[id];
+  });
+  ['installation','material','c1Factor','c1FactorComp','fanEff','ipRating',
+   'safetyFactor','solarAlpha','c2Factor','hxEff','acCOP','acSafety'].forEach(function(id) {
+    if (cfg[id] !== undefined) document.getElementById(id).value = cfg[id];
+  });
+  if (cfg.components) { components = cfg.components; renderComponents(); }
+  if (cfg.mode) setMode(cfg.mode);
+  if (cfg.heatMode) setHeatMode(cfg.heatMode);
+  if (cfg.ventMethod) {
+    ventMethod = cfg.ventMethod;
+    buildVentGrid();
+    document.getElementById('forcedExtras').style.display = (cfg.ventMethod === 'fan-forced') ? '' : 'none';
+    document.getElementById('hxExtras').style.display = (cfg.ventMethod === 'heat-exchanger') ? '' : 'none';
+    document.getElementById('acExtras').style.display = (cfg.ventMethod === 'air-cond') ? '' : 'none';
+  }
+  if (cfg.altF) {
+    altF = cfg.altF;
+    buildAltVisual();
+    document.querySelectorAll('.alt-opt').forEach(function(el, i) {
+      if (altData[i].f === cfg.altF) { el.classList.add('sel'); } else { el.classList.remove('sel'); }
+    });
+  }
+  if (cfg.opts) {
+    Object.keys(cfg.opts).forEach(function(key) {
+      if (cfg.opts[key] !== opts[key]) toggleOpt(key);
+    });
+  }
+  updateK();
+  updateAreaFormula();
+  updateSurfaceArea();
+  updateInstallDiagram();
+}
+
+function getSavedConfigs() {
+  try { return JSON.parse(localStorage.getItem('iec60890_configs') || '[]'); } catch(e) { return []; }
+}
+function saveSavedConfigs(cfgs) {
+  localStorage.setItem('iec60890_configs', JSON.stringify(cfgs));
+}
+
+function openSaveModal() {
+  document.getElementById('saveModal').classList.add('open');
+  renderModalContent();
+}
+function closeSaveModal() {
+  document.getElementById('saveModal').classList.remove('open');
+}
+
+function renderModalContent() {
+  var cfgs = getSavedConfigs();
+  var html = '<input type="text" class="modal-input" id="saveNameInput" placeholder="Configuration name..." value="Config ' + new Date().toLocaleDateString() + '">';
+  html += '<button class="modal-save-btn" onclick="saveCurrentConfig()" style="margin-bottom:1rem;">Save Current Configuration</button>';
+
+  if (cfgs.length) {
+    html += '<div style="font-family:var(--font-head);font-size:14px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">Saved configurations</div>';
+    cfgs.forEach(function(c, i) {
+      html += '<div class="saved-item" onclick="loadSavedConfig(' + i + ')">'
+        + '<div><div class="saved-item-name">' + c.name + '</div><div class="saved-item-date">' + (c.date || '') + '</div></div>'
+        + '<button class="saved-item-del" onclick="event.stopPropagation(); deleteSavedConfig(' + i + ')" aria-label="Delete configuration">×</button>'
+        + '</div>';
+    });
+  } else {
+    html += '<div style="text-align:center;color:var(--text-muted);font-family:var(--font-body);font-size:15px;padding:1rem 0;">No saved configurations yet</div>';
+  }
+  document.getElementById('modalContent').innerHTML = html;
+}
+
+function saveCurrentConfig() {
+  var name = document.getElementById('saveNameInput').value || 'Unnamed';
+  var cfgs = getSavedConfigs();
+  cfgs.push({ name: name, date: new Date().toLocaleString(), state: getConfigState() });
+  saveSavedConfigs(cfgs);
+  renderModalContent();
+}
+function loadSavedConfig(i) {
+  var cfgs = getSavedConfigs();
+  if (cfgs[i]) { loadConfigState(cfgs[i].state); closeSaveModal(); }
+}
+function deleteSavedConfig(i) {
+  var cfgs = getSavedConfigs();
+  cfgs.splice(i, 1);
+  saveSavedConfigs(cfgs);
+  renderModalContent();
+}
+
+// Close modal on overlay click
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-overlay')) closeSaveModal();
+});
+
+// ─── PDF Export ──────────────────────────────────────────────────────────
+function exportPDF() {
+  if (!lastCalcResult) { showAlert('warn', 'Run a calculation first before exporting PDF.'); return; }
+  var r = lastCalcResult;
+
+  // Build printable HTML
+  var modeNames = { fan: 'Cooling Fan Sizing', heater: 'Anti-Condensation Heater Sizing', natural: 'Natural Convection Check' };
+  var instNames = {
+    free_single: 'Single free-standing', wall_single: 'Single wall-mounted',
+    free_suite_end: 'End of suite, free-standing', wall_suite_end: 'End of suite, wall-mounted',
+    free_suite_mid: 'Within suite, free-standing', wall_suite_mid: 'Within suite, wall-mounted',
+    wall_suite_roof: 'Within suite, wall+roof'
+  };
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">'
+    + '<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Lora:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">'
+    + '<style>'
+    + 'body { font-family: "Lora", serif; font-size: 11pt; color: #000000; margin: 40px; line-height: 1.6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }'
+    + 'h1 { font-family: "Syne", sans-serif; font-size: 20pt; font-weight: 700; color: #000000; border-bottom: 3px solid #2bb5a0; padding-bottom: 8px; margin-bottom: 20px; }'
+    + 'h2 { font-family: "Syne", sans-serif; font-size: 14pt; font-weight: 600; color: #000000; border-bottom: 1px solid #2bb5a0; padding-bottom: 4px; margin: 24px 0 12px; }'
+    + '.badge { display: inline-block; font-family: "DM Mono", monospace; font-size: 9pt; color: #000000; border: 1px solid #2bb5a0; border-radius: 3px; padding: 2px 8px; margin-bottom: 8px; }'
+    + '.result-box { background: #f0faf8; border: 2px solid #2bb5a0; border-radius: 8px; padding: 16px; text-align: center; margin: 16px 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }'
+    + '.result-box .val { font-family: "Syne", sans-serif; font-size: 28pt; font-weight: 700; color: #000000; }'
+    + '.result-box .unit { font-family: "DM Mono", monospace; font-size: 12pt; color: #000000; }'
+    + '.result-box .label { font-family: "DM Mono", monospace; font-size: 9pt; color: #000000; text-transform: uppercase; letter-spacing: 0.08em; }'
+    + 'table { width: 100%; border-collapse: collapse; margin: 10px 0; }'
+    + 'th { font-family: "DM Mono", monospace; font-size: 9pt; text-transform: uppercase; letter-spacing: 0.06em; color: #ffffff; background: #2bb5a0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 8px 10px; text-align: left; }'
+    + 'td { padding: 6px 10px; border-bottom: 1px solid #2bb5a0; font-size: 10pt; color: #000000; }'
+    + 'td:first-child { font-weight: 400; width: 40%; word-wrap: break-word; }'
+    + '.pass { color: #2a9d6e; font-weight: 600; } .fail { color: #d04040; font-weight: 600; }'
+    + '.disclaimer { font-size: 8pt; color: #000000; border-top: 1px solid #2bb5a0; padding-top: 8px; margin-top: 24px; }'
+    + '@media print { body { margin: 20px; } }'
+    + '</style></head><body>';
+
+  html += '<div class="badge">IEC TR 60890 : 2014</div>';
+  html += '<h1>Switchboard Heat Load — ' + modeNames[r.mode] + '</h1>';
+
+  // Project details
+  var proj = getProjectDetails();
+  var hasProj = proj.name || proj.number || proj.client || proj.engineer;
+  if (hasProj) {
+    html += '<table style="margin-bottom:16px;">';
+    if (proj.name) html += '<tr><td>Project</td><td>' + proj.name + '</td></tr>';
+    if (proj.number) html += '<tr><td>Job number</td><td>' + proj.number + '</td></tr>';
+    if (proj.client) html += '<tr><td>Client</td><td>' + proj.client + '</td></tr>';
+    if (proj.engineer) html += '<tr><td>Engineer</td><td>' + proj.engineer + '</td></tr>';
+    if (proj.location) html += '<tr><td>Location</td><td>' + proj.location + '</td></tr>';
+    if (proj.date) html += '<tr><td>Date</td><td>' + proj.date + '</td></tr>';
+    if (proj.notes) html += '<tr><td>Notes</td><td>' + proj.notes + '</td></tr>';
+    html += '</table>';
+  }
+
+
+  // Primary result
+  html += '<div class="result-box"><div class="label">' + r.primaryLabel + '</div><div class="val">' + r.primaryValue + '</div><div class="unit">' + r.primaryUnit + '</div></div>';
+
+  var sn = 1; // section number counter
+
+  // Input parameters
+  html += '<h2>' + (sn++) + '. Input Parameters</h2><table>';
+  html += '<tr><td>Installation type</td><td>' + instNames[r.inst] + '</td></tr>';
+  html += '<tr><td>Dimensions (H × W × D)</td><td>' + r.H + ' × ' + r.W + ' × ' + r.D + ' mm</td></tr>';
+  html += '<tr><td>Enclosure material k</td><td>' + r.kBase + ' W/m²K' + (r.k !== r.kBase ? ' (derated to ' + r.k.toFixed(2) + ')' : '') + '</td></tr>';
+  html += '<tr><td>Internal temperature Ti</td><td>' + r.Ti + ' °C</td></tr>';
+  html += '<tr><td>Ambient temperature Tu</td><td>' + r.Tu + ' °C</td></tr>';
+  html += '<tr><td>ΔT</td><td>' + r.dT.toFixed(1) + ' K</td></tr>';
+  if (r.mode === 'fan') html += '<tr><td>Altitude / air constant f</td><td>' + r.altF + ' m³K/Wh</td></tr>';
+  if (r.safetyFactor !== 1) html += '<tr><td>Safety factor</td><td>' + r.safetyFactor + '</td></tr>';
+  html += '</table>';
+
+  // Component list if used
+  if (r.heatMode === 'components' && r.components.length) {
+    html += '<h2>' + (sn++) + '. Component Heat Losses</h2><table><tr><th>Component</th><th>Qty</th><th>Loss (W ea.)</th><th>Total (W)</th></tr>';
+    r.components.forEach(function(c) {
+      html += '<tr><td>' + c.name + '</td><td>' + c.qty + '</td><td>' + c.loss + '</td><td>' + (c.qty * c.loss).toFixed(1) + '</td></tr>';
+    });
+    html += '</table>';
+  }
+
+  // Calculation steps
+  html += '<h2>' + (sn++) + '. Calculation Steps</h2><table><tr><th>Symbol</th><th>Expression</th><th>Result</th></tr>';
+  r.steps.forEach(function(s) {
+    html += '<tr><td style="width:15%;">' + (s.sym || '') + '</td><td style="width:55%;">' + s.expr + '</td><td style="width:30%;">' + s.val + '</td></tr>';
+  });
+  html += '</table>';
+
+  // Results summary
+  html += '<h2>' + (sn++) + '. Results Summary</h2><table>';
+  r.panels.forEach(function(p) {
+    html += '<tr><td>' + p.label + '</td><td>' + p.val + ' ' + p.unit + '</td></tr>';
+  });
+  r.extras.forEach(function(e) {
+    html += '<tr><td>' + e.label + '</td><td>' + e.val + '</td></tr>';
+  });
+  html += '</table>';
+
+  // Alerts
+  if (r.alerts.length) {
+    r.alerts.forEach(function(a) {
+      html += '<p class="' + (a.type === 'success' ? 'pass' : a.type === 'danger' ? 'fail' : '') + '">' + a.msg + '</p>';
+    });
+  }
+
+  html += '<div class="disclaimer">This calculation is provided as a design aid only. Results should be verified by a qualified engineer. '
+    + 'Based on IEC TR 60890:2014 methodology. This tool does not replace engineering judgement or site-specific assessment.</div>';
+  html += '</body></html>';
+
+  // Open print dialog
+  var win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(function() { win.print(); }, 500);
+}
+</script>
+
+<!-- ═══ SEO / Explainer Content ══════════════════════════════════════════ -->
+<section class="seo-section" aria-label="About this calculator">
+  <div class="seo-inner">
+
+    <h2>About this Switchboard Heat Load Calculator</h2>
+    <p>This free online calculator from <strong>SparkyCalc</strong> implements the <strong>IEC TR 60890</strong> method for verifying temperature rise in low-voltage switchgear and controlgear assemblies. It is designed for electrical engineers, switchboard manufacturers, panel builders and maintenance engineers who need to size cooling fans, anti-condensation heaters, heat exchangers, or air conditioning units for electrical enclosures.</p>
+    <p>The calculator supports all seven IEC TR 60890 installation configurations, a built-in component loss library with over 50 common devices (MCBs, MCCBs, ACBs, contactors, VFDs, soft starters, CTs, busbars and more), PDF report export for documentation, and save/load configurations so you can return to previous calculations.</p>
+
+    <div class="seo-grid">
+      <article class="seo-card">
+        <h3>Cooling Fan Sizing</h3>
+        <p>When the internal heat gain of a switchboard (QG) exceeds the heat the enclosure can dissipate through its walls (QS), forced ventilation is required. The calculator determines the required airflow rate V in m3/h, litres per second, and CFM. It applies the altitude correction factor <em>f</em>, fan efficiency, and any inlet temperature rise to give you an accurate fan specification for your site elevation.</p>
+      </article>
+      <article class="seo-card">
+        <h3>Anti-Condensation Heater Sizing</h3>
+        <p>In cold or humid environments, a switchboard heater prevents moisture condensation on busbars and insulation. The IEC TR 60890 heater formula Q = A x k x (Ti - Tu) gives the minimum heater wattage needed to maintain the internal temperature above the dew point. The calculator rounds up to the nearest standard heater size and provides installation guidance.</p>
+      </article>
+      <article class="seo-card">
+        <h3>Natural Convection Check</h3>
+        <p>Many enclosures can reject sufficient heat through their surfaces without any active cooling. This mode calculates the surface heat dissipation QS and compares it to the internal heat gain QG. If QS exceeds QG, no fan is required. A surface finish correction factor c2 accounts for enclosure colour and material finish.</p>
+      </article>
+      <article class="seo-card">
+        <h3>Heat Exchangers &amp; Air Conditioning</h3>
+        <p>For sealed enclosures with high IP ratings where open ventilation is not acceptable, the calculator supports heat exchanger sizing (using effectiveness factor) and air conditioning capacity sizing (using the Coefficient of Performance, COP). Safety factors can be applied to all cooling methods.</p>
+      </article>
+    </div>
+
+    <h2>How IEC TR 60890 Works</h2>
+    <p>The IEC TR 60890 method calculates heat flow in three stages. First, the effective surface area <em>A</em> of the enclosure is determined using one of seven installation-specific formulas that account for which faces are exposed to free air. Second, the surface heat dissipation QS = k x A x dT is calculated, where <em>k</em> is the heat transfer coefficient of the enclosure material and dT is the temperature difference between internal and ambient air. Third, the residual heat QR = QG - QS determines whether active cooling is needed.</p>
+    <p>If QR is positive, forced ventilation or another active cooling method is required. The required airflow for a fan is V = f x QR / dT, where <em>f</em> is an altitude-dependent air constant ranging from 3.1 at sea level to 5.2 at 3,500 m altitude.</p>
+
+    <h2>Supported Installation Configurations</h2>
+    <p>IEC TR 60890 defines seven standard installation geometries, each with a different effective surface area formula. These include single free-standing switchboards (all faces exposed), wall-mounted switchboards (rear face against wall), end-of-suite panels (one side shared), mid-suite panels (both sides shared), and wall-mounted with roof covering (maximum shielding). Selecting the correct installation type is critical for accurate results.</p>
+
+    <h2>Who Uses This Calculator?</h2>
+    <p>This tool is used by electrical engineers designing main switchboards (MSBs), motor control centres (MCCs), distribution boards (DBs) and power distribution units (PDUs). Switchboard manufacturers use it during the design phase to verify temperature rise compliance with IEC 61439. Maintenance engineers use it to troubleshoot overheating enclosures and specify retrofit cooling solutions.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <dl class="seo-faq">
+      <dt>What standard does this calculator follow?</dt>
+      <dd>This calculator implements the <strong>IEC TR 60890</strong> method for temperature-rise verification of low-voltage switchgear and controlgear assemblies by calculation. The formulas are consistent with both the 2014 (second edition) and 2022 (third edition) versions of the standard.</dd>
+
+      <dt>Can I use this for motor control centres (MCCs)?</dt>
+      <dd>Yes. IEC TR 60890 applies to all low-voltage switchgear and controlgear assemblies, including motor control centres, main switchboards, distribution boards, power distribution units, and PLC control panels, provided they are enclosed assemblies.</dd>
+
+      <dt>What is the heat transfer coefficient k?</dt>
+      <dd>The heat transfer coefficient k describes how well the enclosure material conducts and radiates heat. Per IEC TR 60890, sheet steel and aluminium use k = 5.5 W/m2K, stainless steel uses k = 5.1 W/m2K, and plastic or polyester enclosures use k = 3.5 W/m2K. High IP-rated enclosures should be derated accordingly.</dd>
+
+      <dt>Why does altitude affect fan sizing?</dt>
+      <dd>At higher altitudes, air is less dense and has a lower heat capacity per unit volume. The same airflow rate carries less heat at altitude than at sea level. The IEC TR 60890 air constant <em>f</em> corrects for this, meaning a larger fan is needed at high altitude to achieve the same cooling effect.</dd>
+
+      <dt>What safety margin should I apply to fan sizing?</dt>
+      <dd>IEC TR 60890 does not mandate a specific safety factor, but industry practice is to select a fan rated at 20% above the calculated airflow to account for filter mat fouling over time. This calculator allows you to apply safety factors from 1.0 to 1.5.</dd>
+
+      <dt>Does this calculator comply with IEC 61439?</dt>
+      <dd>IEC TR 60890 provides the calculation method referenced by IEC 61439-1 for temperature rise verification by calculation. This calculator implements that method and can be used as part of an IEC 61439 design verification package when combined with appropriate engineering review.</dd>
+    </dl>
+
+  </div>
+</section>
+
+</body>
+</html>
